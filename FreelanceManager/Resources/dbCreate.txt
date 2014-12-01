@@ -1,0 +1,90 @@
+create table if not exists "tblSources"
+(
+  [idSource] integer primary key autoincrement not null
+, [SourceName] varchar(256) not null
+, [isVisible] bit not null default 1
+, [email] varchar(256)
+);
+
+create unique index if not exists "tblSources_SourceName_index" on tblSources (SourceName asc);
+
+create table if not exists "tblStatuses"
+(
+  [idStatus] integer primary key autoincrement not null
+, [StatusName] varchar(256) not null
+, [StatusColor] integer not null default -1
+, [isVisible] bit not null default 1
+);
+
+create unique index if not exists "tblStatuses_StatusName_index" on tblStatuses (StatusName asc);
+
+create table if not exists "tblLanguages"
+(
+  [idLanguage] integer primary key autoincrement not null
+, [LanguageName] varchar(256) not null
+);
+
+create unique index if not exists "tblLanguages_LanguageName_index" on tblLanguages (LanguageName asc);
+
+create table if not exists "tblTasks"
+(
+  [idTask] integer primary key autoincrement not null
+, [idSource] integer not null
+, [TaskNumber] varchar(256) not null
+, [TaskName] varchar(256) not null
+, [idLanguage] integer not null
+, [SubtaskCount] integer not null default 1
+, [SubtaskNumber] integer not null default 1
+, [TaskReceiveDate] datetime not null
+, [TaskDeadlineDate] datetime
+, [FirstDoneVersionDate] datetime
+, [Cost] decimal(18, 2) not null
+, [idStatus] integer not null
+, [Remark] varchar(4000)
+, foreign key ([idSource]) references [tblSources] ([idSource])
+, foreign key ([idLanguage]) references [tblLanguages] ([idLanguage])
+, foreign key ([idStatus]) references [tblStatuses] ([idStatus])
+);
+
+create index if not exists "tblTasks_TaskNumber_index" on tblTasks (TaskNumber asc);
+create index if not exists "tblTasks_TaskName_index" on tblTasks (TaskName asc);
+create index if not exists "tblTasks_TaskReceiveDate_index" on tblTasks (TaskReceiveDate asc);
+create index if not exists "tblTasks_TaskDeadlineDate_index" on tblTasks (TaskDeadlineDate asc);
+
+create table if not exists "tblTasksStatusHistory"
+(
+  [idHistory] integer primary key autoincrement not null
+, [idTask] integer not null
+, [HistoryDate] datetime not null
+, [idStatus] integer not null
+, foreign key ([idTask]) references [tblTasks] ([idTask])
+, foreign key ([idStatus]) references [tblSources] ([idSource])
+);
+
+create index if not exists "tblTasksStatusHistory_HistoryDate_index" on tblTasksStatusHistory (HistoryDate asc);
+
+create trigger if not exists "tblTasks_SaveHistory_after_insert" after insert on tblTasks
+begin
+  insert into tblTasksStatusHistory (idTask, HistoryDate, idStatus) values (new.idTask, DateTime('now'), new.idStatus);
+end;
+
+create trigger if not exists "tblTasks_SaveHistory_after_status_update" after update of [idStatus] on tblTasks
+begin
+  insert into tblTasksStatusHistory (idTask, HistoryDate, idStatus) values (new.idTask, DateTime('now'), new.idStatus);
+end;
+
+create trigger if not exists "tblTasks_AutoSet_FirstDoneVersionDate_after_status_update" after update of [idStatus] on tblTasks
+begin
+  update tblTasks set FirstDoneVersionDate = case when new.idStatus = 7 and FirstDoneVersionDate is null then date('now') end where tblTasks.idTask = new.idTask;
+end;
+
+create table if not exists "tblTasksLinks"
+(
+  [idLink] integer primary key autoincrement not null
+, [idTask] integer not null
+, [Link] varchar(4000) not null
+, [LinkName] varchar(256) not null
+, foreign key ([idTask]) references [tblTasks] ([idTask])
+);
+
+create index if not exists "tblTasksLinks_idTask_index" on tblTasksLinks (idTask asc);

@@ -1,0 +1,683 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+// SQLite
+using System.Data.SQLite;
+
+namespace FreelanceManager
+{
+  public partial class frmMain : Form
+  {    
+    fmProperties properties = null;
+    fmGoogleDrive googledrive = null;
+    fmDB db = null;
+
+    SQLiteDataAdapter adapterTasks = null;
+    DataTable tableTasks = null;
+    SQLiteDataAdapter adapterLinks = null;
+    DataTable tableLinks = null;
+
+    DataGridView tempTable = null;
+
+    private DateTimePicker cellDateTimePickerTasks;
+
+    public frmMain()
+    {
+      InitializeComponent();      
+      properties = new fmProperties();
+      properties.Load();
+      googledrive = new fmGoogleDrive();
+      if (!googledrive.GoogleDriveConnect())
+      {
+        MessageBox.Show("Не удалось соединиться с Google Drive. Программа работает в автономном режиме", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+      }
+      db = new fmDB();
+      db.setProperties(properties);
+      db.Connect();
+      if (CreateDBIfNotExists() == false)
+      {
+        MessageBox.Show("Ошибка работы с базой данных. Дальнейшая работа невозможна", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        Environment.Exit(0);
+      }
+    }    
+
+    private void menuExit_Click(object sender, EventArgs e)
+    {
+      Close();
+    }
+
+    private void menuProperties_Click(object sender, EventArgs e)
+    {
+      properties.showPropertiesWindow();
+      if (db != null)
+      {
+        db.ReConnect();
+      }
+    }
+
+    private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      if (db != null)
+      {
+        db.CloseConnection();
+      }
+    }
+
+    private bool CreateDBIfNotExists()
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      return db.ExecuteNonQuery(Properties.Resources.dbCreate);
+    }
+
+    private void menuReferenceSources_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      SQLiteDataAdapter adapter = null;
+      DataTable table = db.ExecuteReferenceSources(ref adapter);
+      frmReference frm = new frmReference("Источники", table, false, false);
+      DataGridView tblData = null;
+      frm.gettblData(ref tblData);
+
+      foreach (DataGridViewColumn c in tblData.Columns)
+      {
+        if (c.Name == "SourceName")
+        {
+          c.HeaderText = "Наименование";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        }
+        else if (c.Name == "email")
+        {
+          c.HeaderText = "EMail";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        }
+        else
+        {
+          c.Visible = false;
+        }
+      }
+
+      DataGridViewCheckBoxColumn cbIsVisible = new DataGridViewCheckBoxColumn();
+      cbIsVisible.HeaderText = "Включено";
+      cbIsVisible.Name = "cbIsVisible";
+      cbIsVisible.DataPropertyName = "isVisible";
+      cbIsVisible.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+      tblData.Columns.Add(cbIsVisible);
+
+      if (frm.ShowDialog() == DialogResult.OK)
+      {
+        adapter.Update(table);
+        if (tableTasks != null && adapterTasks != null)
+        {
+          tableTasks.Clear();
+          adapterTasks.Fill(tableTasks);
+        }
+      }
+      frm.Dispose();
+    }
+
+    private void menuReferenceStatuses_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      SQLiteDataAdapter adapter = null;
+      DataTable table = db.ExecuteReferenceStatuses(ref adapter);
+      frmReference frm = new frmReference("Статусы", table, false, false);
+      DataGridView tblData = null;
+      frm.gettblData(ref tblData);
+
+      foreach (DataGridViewColumn c in tblData.Columns)
+      {
+        if (c.Name == "StatusName")
+        {
+          c.HeaderText = "Наименование";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        }
+        else
+        {
+          c.Visible = false;
+        }
+      }
+
+      DataGridViewButtonColumn btnColor = new DataGridViewButtonColumn();
+      btnColor.HeaderText = "Цвет";
+      btnColor.Name = "btnColor";
+      btnColor.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+      tblData.Columns.Add(btnColor);
+      tempTable = tblData;
+      tblData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(tblData_drawColorButton_CellClick);
+      tblData.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(tblData_drawColorButton_CellPainting);
+
+      DataGridViewCheckBoxColumn cbIsVisible = new DataGridViewCheckBoxColumn();
+      cbIsVisible.HeaderText = "Включено";
+      cbIsVisible.Name = "cbIsVisible";
+      cbIsVisible.DataPropertyName = "isVisible";
+      cbIsVisible.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+      tblData.Columns.Add(cbIsVisible);
+
+      if (frm.ShowDialog() == DialogResult.OK)
+      {
+        adapter.Update(table);
+        if (tableTasks != null && adapterTasks != null)
+        {
+          tableTasks.Clear();
+          adapterTasks.Fill(tableTasks);
+        }
+      }
+      frm.Dispose();
+    }
+
+    private void tblData_drawColorButton_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+    {
+      if (e.RowIndex != -1)
+      {
+        object value = tempTable.Rows[e.RowIndex].Cells["StatusColor"].Value;
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          e.CellStyle.BackColor = Color.FromArgb(Convert.ToInt32(str));
+        }
+      }
+    }
+
+    private void tblData_drawColorButton_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+      ColorDialog dlg = new ColorDialog();
+      if (e.RowIndex != -1 && tempTable.Rows[e.RowIndex].Cells["StatusColor"].Value != DBNull.Value)
+      {
+        object value = tempTable.Rows[e.RowIndex].Cells["StatusColor"].Value;
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          dlg.Color = Color.FromArgb(Convert.ToInt32(str));
+        }
+      }
+      if (e.ColumnIndex == tempTable.Columns["btnColor"].Index && e.RowIndex != -1)
+      {
+        if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+          tempTable.Rows[e.RowIndex].Cells["StatusColor"].Value = dlg.Color.ToArgb();
+          tempTable.Invalidate();
+        }
+      }
+    }
+
+    private void menuReferenceLanguages_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      SQLiteDataAdapter adapter = null;
+      DataTable table = db.ExecuteReferenceLanguages(ref adapter);
+      frmReference frm = new frmReference("Языки", table, false, false);
+      DataGridView tblData = null;
+      frm.gettblData(ref tblData);
+
+      foreach (DataGridViewColumn c in tblData.Columns)
+      {
+        if (c.Name == "LanguageName")
+        {
+          c.HeaderText = "Наименование";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        }
+        else
+        {
+          c.Visible = false;
+        }
+      }
+
+      if (frm.ShowDialog() == DialogResult.OK)
+      {
+        adapter.Update(table);
+      }
+      frm.Dispose();
+    }
+
+    private void ShowTasks()
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }   
+
+      tableTasks = db.ExecuteMainTasks(ref adapterTasks);
+
+      BindingSource bindTasks = new BindingSource();
+      bindTasks.DataSource = tableTasks;
+      tblTasks.DataSource = bindTasks;
+      navTasks.BindingSource = bindTasks;
+
+      if (tblTasks.Columns.Count == 0)
+      {
+        cellDateTimePickerTasks = new DateTimePicker();
+        tblTasks.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(cellDateTimePickerTasks_CellBeginEdit);
+        tblTasks.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(cellDateTimePickerTasks_CellEndEdit);
+        cellDateTimePickerTasks.ValueChanged += new EventHandler(cellDateTimePickerTasks_ValueChanged);
+        cellDateTimePickerTasks.Visible = false;
+        tblTasks.Controls.Add(cellDateTimePickerTasks);
+
+        DataGridViewTextBoxColumn colIdTask = new DataGridViewTextBoxColumn();
+        colIdTask.DataPropertyName = "idTask";
+        colIdTask.Name = "idTask";
+        colIdTask.HeaderText = "ID задания";
+        colIdTask.ReadOnly = true;
+
+        tblTasks.Columns.Add(colIdTask);
+
+        DataGridViewComboBoxColumn colSource = new DataGridViewComboBoxColumn();
+        SQLiteDataAdapter adapterSource = null;
+        colSource.DataSource = db.ExecuteReferenceSources(ref adapterSource);
+        colSource.DisplayMember = "SourceName";
+        colSource.ValueMember = "idSource";
+        colSource.DataPropertyName = "idSource";
+        colSource.Name = "SourceName";
+        colSource.HeaderText = "Источник";
+        tblTasks.Columns.Add(colSource);
+
+        DataGridViewTextBoxColumn colNumber = new DataGridViewTextBoxColumn();
+        colNumber.DataPropertyName = "TaskNumber";
+        colNumber.Name = "TaskNumber";
+        colNumber.HeaderText = "№ заказа";
+        colNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colNumber);
+
+        DataGridViewTextBoxColumn colName = new DataGridViewTextBoxColumn();
+        colName.DataPropertyName = "TaskName";
+        colName.Name = "TaskName";
+        colName.HeaderText = "Наименование";
+        colName.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colName);
+
+        DataGridViewComboBoxColumn colLanguage = new DataGridViewComboBoxColumn();
+        SQLiteDataAdapter adapterLanguage = null;
+        colLanguage.DataSource = db.ExecuteReferenceLanguages(ref adapterLanguage);
+        colLanguage.DisplayMember = "LanguageName";
+        colLanguage.ValueMember = "idLanguage";
+        colLanguage.DataPropertyName = "idLanguage";
+        colLanguage.Name = "LanguageName";
+        colLanguage.HeaderText = "Язык";
+        tblTasks.Columns.Add(colLanguage);
+
+        DataGridViewTextBoxColumn colSubtaskCount = new DataGridViewTextBoxColumn();
+        colSubtaskCount.DataPropertyName = "SubtaskCount";
+        colSubtaskCount.Name = "SubtaskCount";
+        colSubtaskCount.HeaderText = "Кол-во заданий";
+        colSubtaskCount.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colSubtaskCount);
+
+        DataGridViewTextBoxColumn colSubtaskNumber = new DataGridViewTextBoxColumn();
+        colSubtaskNumber.DataPropertyName = "SubtaskNumber";
+        colSubtaskNumber.Name = "SubtaskNumber";
+        colSubtaskNumber.HeaderText = "№ задания";
+        colSubtaskNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colSubtaskNumber);
+
+        DataGridViewTextBoxColumn colTaskReceiveDate = new DataGridViewTextBoxColumn();
+        colTaskReceiveDate.DataPropertyName = "TaskReceiveDate";
+        colTaskReceiveDate.Name = "TaskReceiveDate";
+        colTaskReceiveDate.HeaderText = "Дата выдачи задания";
+        colTaskReceiveDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colTaskReceiveDate);
+
+        DataGridViewTextBoxColumn colTaskDeadlineDate = new DataGridViewTextBoxColumn();
+        colTaskDeadlineDate.DataPropertyName = "TaskDeadlineDate";
+        colTaskDeadlineDate.Name = "TaskDeadlineDate";
+        colTaskDeadlineDate.HeaderText = "Конечный срок выполнения";
+        colTaskDeadlineDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colTaskDeadlineDate);
+
+        DataGridViewTextBoxColumn colFirstDoneVersionDate = new DataGridViewTextBoxColumn();
+        colFirstDoneVersionDate.DataPropertyName = "FirstDoneVersionDate";
+        colFirstDoneVersionDate.Name = "FirstDoneVersionDate";
+        colFirstDoneVersionDate.HeaderText = "Дата сдачи первой версии";
+        colFirstDoneVersionDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colFirstDoneVersionDate);
+
+        DataGridViewTextBoxColumn colPeriod = new DataGridViewTextBoxColumn();
+        colPeriod.DataPropertyName = "Period";
+        colPeriod.Name = "Period";
+        colPeriod.HeaderText = "Период";
+        colPeriod.ReadOnly = true;
+        colPeriod.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colPeriod);
+
+        DataGridViewTextBoxColumn colCost = new DataGridViewTextBoxColumn();
+        colCost.DataPropertyName = "Cost";
+        colCost.Name = "Cost";
+        colCost.HeaderText = "Стоимость";
+        colCost.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colCost);
+
+        DataGridViewComboBoxColumn colStatus = new DataGridViewComboBoxColumn();
+        SQLiteDataAdapter adapterStatus = null;
+        colStatus.DataSource = db.ExecuteReferenceStatuses(ref adapterStatus);
+        colStatus.DisplayMember = "StatusName";
+        colStatus.ValueMember = "idStatus";
+        colStatus.DataPropertyName = "idStatus";
+        colStatus.Name = "StatusName";
+        colStatus.HeaderText = "Статус";
+        tblTasks.Columns.Add(colStatus);
+
+        DataGridViewTextBoxColumn colRemark = new DataGridViewTextBoxColumn();
+        colRemark.DataPropertyName = "Remark";
+        colRemark.Name = "Remark";
+        colRemark.HeaderText = "Примечание";
+        colRemark.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        tblTasks.Columns.Add(colRemark);
+
+        DataGridViewTextBoxColumn colColor = new DataGridViewTextBoxColumn();
+        colColor.DataPropertyName = "StatusColor";
+        colColor.Name = "StatusColor";
+        colColor.HeaderText = "Цвет";
+        colColor.Visible = false;
+        tblTasks.Columns.Add(colColor);
+      }
+
+      foreach (DataGridViewColumn c in tblTasks.Columns)
+      {
+        if (c.Name == "idTask")
+        {
+          c.Visible = false;
+        }
+      }
+
+      if (tblTasks.DataBindings.Count == 0)
+      {
+        System.Collections.IEnumerator enumerator = tableTasks.Columns.GetEnumerator();
+        if (enumerator.MoveNext() == false)
+        {
+          throw new Exception("Table doesn't contain columns");
+        }
+        tblTasks.DataBindings.Add(new Binding("text", tableTasks, ((System.Data.DataColumn)enumerator.Current).ColumnName));
+      }
+
+    }
+
+    private void ShowLinks(object idTask)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }      
+
+      Int32 _idTask = (idTask == DBNull.Value ? -1 : Convert.ToInt32(idTask));
+
+      tableLinks = db.ExecuteMainLinks(ref adapterLinks, _idTask);
+
+      BindingSource bindLinks = new BindingSource();
+      bindLinks.DataSource = tableLinks;
+      tblLinks.DataSource = bindLinks;
+      navLinks.BindingSource = bindLinks;
+
+      if (tblLinks.Columns.Count == 0)
+      {
+        DataGridViewTextBoxColumn colIdLink = new DataGridViewTextBoxColumn();
+        colIdLink.DataPropertyName = "idLink";
+        colIdLink.Name = "idLink";
+        colIdLink.HeaderText = "ID вложения";
+        colIdLink.Width = 0;
+        colIdLink.ReadOnly = true;
+        tblLinks.Columns.Add(colIdLink);
+
+        DataGridViewTextBoxColumn colIdTask = new DataGridViewTextBoxColumn();
+        colIdTask.DataPropertyName = "idTask";
+        colIdTask.Name = "idTask";
+        colIdTask.HeaderText = "ID задания";
+        colIdTask.Width = 0;
+        colIdTask.ReadOnly = true;
+        tblLinks.Columns.Add(colIdTask);
+
+        DataGridViewTextBoxColumn colLinkName = new DataGridViewTextBoxColumn();
+        colLinkName.DataPropertyName = "LinkName";
+        colLinkName.Name = "LinkName";
+        colLinkName.HeaderText = "Наименование";
+        tblLinks.Columns.Add(colLinkName);
+
+        DataGridViewTextBoxColumn colLink = new DataGridViewTextBoxColumn();
+        colLink.DataPropertyName = "Link";
+        colLink.Name = "Link";
+        colLink.HeaderText = "Ссылка";
+        tblLinks.Columns.Add(colLink);
+      }
+
+      foreach (DataGridViewColumn c in tblLinks.Columns)
+      {
+        if (c.Name == "idLink")
+        {
+          c.Visible = false;
+        }
+        else if (c.Name == "idTask")
+        {
+          c.Visible = false;
+        }
+      }
+
+      if (tblLinks.DataBindings.Count == 0)
+      {
+        System.Collections.IEnumerator enumerator = tableLinks.Columns.GetEnumerator();
+        if (enumerator.MoveNext() == false)
+        {
+          throw new Exception("Table doesn't contain columns");
+        }
+        tblLinks.DataBindings.Add(new Binding("text", tableLinks, ((System.Data.DataColumn)enumerator.Current).ColumnName));
+      }
+    }
+
+    private void frmMain_Load(object sender, EventArgs e)
+    {
+      this.tblTasks.AutoGenerateColumns = false;
+      this.tblLinks.AutoGenerateColumns = false;
+    }
+
+    private void cellDateTimePickerTasks_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+    {
+      if ((e.ColumnIndex == tblTasks.Columns["TaskReceiveDate"].Index || e.ColumnIndex == tblTasks.Columns["TaskDeadlineDate"].Index || e.ColumnIndex == tblTasks.Columns["FirstDoneVersionDate"].Index) && e.RowIndex != -1)
+      {
+        Rectangle tempRect = tblTasks.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+        cellDateTimePickerTasks.Location = tempRect.Location;
+        cellDateTimePickerTasks.Width = tempRect.Width;
+        try
+        {
+          cellDateTimePickerTasks.Value = DateTime.Parse(tblTasks.CurrentCell.Value.ToString());
+        }
+        catch
+        {
+          cellDateTimePickerTasks.Value = DateTime.Now;
+        }
+        cellDateTimePickerTasks.Visible = true;
+      }
+    }
+
+    private void cellDateTimePickerTasks_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+    {
+      cellDateTimePickerTasks.Visible = false;
+    }
+
+    private void cellDateTimePickerTasks_ValueChanged(object sender, EventArgs e)
+    {
+      tblTasks.CurrentCell.Value = cellDateTimePickerTasks.Value.ToString("dd/MM/yyyy");
+    }
+
+    private void tblTasks_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+    {
+      if (e.RowIndex != -1)
+      {
+        object value = tblTasks.Rows[e.RowIndex].Cells["StatusColor"].Value;
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          e.CellStyle.BackColor = Color.FromArgb(Convert.ToInt32(str));
+        }
+      }
+    }
+
+    private void SaveTasks()
+    {
+      if (adapterTasks != null && tableTasks != null)
+      {
+        try
+        {
+          adapterTasks.Update(tableTasks);
+        }
+        catch { }
+      }
+    }
+
+    private void SaveLinks()
+    {
+      SaveTasks();
+
+      if (adapterLinks != null && tableLinks != null)
+      {
+        try
+        {        
+          adapterLinks.Update(tableLinks);
+        }
+        catch { }
+      }
+    }
+
+    private void tblTasks_RowLeave(object sender, DataGridViewCellEventArgs e)
+    {
+      SaveTasks();
+    }
+
+    private void tblLinks_RowLeave(object sender, DataGridViewCellEventArgs e)
+    {
+      if (tblLinks.Rows[e.RowIndex].Cells["idTask"].Value == DBNull.Value)
+      {
+        tblLinks.Rows[e.RowIndex].Cells["idTask"].Value = tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["idTask"].Value;
+      }
+      SaveLinks();
+    }
+
+    private void frmMain_Shown(object sender, EventArgs e)
+    {
+      ShowTasks();
+      ShowLinks((tblTasks.CurrentCell != null && tblTasks.CurrentCell.RowIndex != -1) ? tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["idTask"].Value : DBNull.Value);
+      this.tblTasks.SelectionChanged += new System.EventHandler(this.tblTasks_SelectionChanged);
+    }
+
+    private void tblTasks_SelectionChanged(object sender, EventArgs e)
+    {
+      ShowLinks((tblTasks.CurrentCell != null && tblTasks.CurrentCell.RowIndex != -1) ? tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["idTask"].Value : DBNull.Value);
+    }
+
+    private void menuSave_Click(object sender, EventArgs e)
+    {
+      if (tblTasks.Focused)
+      {
+        int rowindex = tblTasks.CurrentCell.RowIndex;
+        int colindex = tblTasks.CurrentCell.ColumnIndex;
+        SaveTasks();
+        ShowTasks();
+        DataGridViewCell selected = tblTasks.Rows[rowindex].Cells[colindex];
+        tblTasks.CurrentCell = selected;
+        tblTasks_SelectionChanged(sender, e);
+      }
+      else if (tblLinks.Focused)
+      {
+        int rowindex = tblLinks.CurrentCell.RowIndex;
+        int colindex = tblLinks.CurrentCell.ColumnIndex;
+        SaveLinks();
+        tblTasks_SelectionChanged(sender, e);
+        DataGridViewCell selected = tblLinks.Rows[rowindex].Cells[colindex];
+        tblLinks.CurrentCell = selected;
+      }
+    }
+
+    private void tblLinks_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+    {
+      OpenLink();
+    }
+
+    private void OpenLink()
+    {
+      if (tblLinks.CurrentCell == null)
+        return;
+      int rowindex = tblLinks.CurrentCell.RowIndex;
+      if (rowindex >= 0 && tblLinks[3, rowindex].Value != null && Convert.ToString(tblLinks[3, rowindex].Value).Length > 0)
+      {
+        string url = Convert.ToString(tblLinks[3, rowindex].Value);
+        Process.Start(url);
+      }
+    }
+
+    private void OpenFile()
+    {
+      if (tblLinks.CurrentCell == null)
+        return;
+      int rowindex = tblLinks.CurrentCell.RowIndex;
+      if (rowindex < 0 || tblLinks[0, rowindex].Value == null || Convert.ToString(tblLinks[0, rowindex].Value).Length == 0)
+        return;    
+      if (properties == null)
+        return;
+      SQLiteDataAdapter adapter = null;
+      int idLink = Convert.ToInt32(tblLinks[0, rowindex].Value);
+      DataTable t = db.ExecuteMainGetLinkPath(ref adapter, idLink);
+      if (t == null || t.Rows.Count == 0)
+        return;
+      DataRow row = t.Rows[0];
+      string projectName = Convert.ToString(row["SourceName"]);
+      string taskName = Convert.ToString(row["TaskNumber"]);
+      string fileName = Convert.ToString(row["LinkName"]);      
+      
+      string path = Path.Combine(properties.strFreelanceDirectoryPath, projectName, taskName, fileName);
+      try
+      {
+        Process.Start(path);
+      }
+      catch 
+      {
+        MessageBox.Show("Файл не найден");
+      }
+
+    }
+
+    private void btnOpenLink_Click(object sender, EventArgs e)
+    {
+        OpenLink();
+    }
+
+    private void btnOpenFile_Click(object sender, EventArgs e)
+    {
+      OpenFile();
+    }
+
+    private void menuBill_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      frmBill frm = new frmBill(db);
+      SQLiteDataAdapter adapter = null;
+      DataTable tableSources = db.ExecuteReferenceSources(ref adapter);
+      frm.cbSource.DataSource = tableSources;
+      frm.cbSource.DisplayMember = "SourceName";
+      frm.cbSource.ValueMember = "idSource";
+      frm.ShowDialog();
+    }
+  }
+}
