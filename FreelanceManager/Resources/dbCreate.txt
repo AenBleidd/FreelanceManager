@@ -75,7 +75,7 @@ end;
 
 create trigger if not exists "tblTasks_AutoSet_FirstDoneVersionDate_after_status_update" after update of [idStatus] on tblTasks
 begin
-  update tblTasks set FirstDoneVersionDate = case when new.idStatus = 7 and FirstDoneVersionDate is null then date('now') end where tblTasks.idTask = new.idTask;
+  update tblTasks set FirstDoneVersionDate = case when new.idStatus = 7 and FirstDoneVersionDate is null then date('now') else tblTasks.FirstDoneVersionDate end where tblTasks.idTask = new.idTask;
 end;
 
 create table if not exists "tblTasksLinks"
