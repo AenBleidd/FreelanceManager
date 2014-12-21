@@ -69,11 +69,18 @@ namespace FreelanceManager
       connection = null;
     }
 
-    public bool ExecuteNonQuery(string query)
+    public bool ExecuteNonQuery(string query, Dictionary<string, SQLiteParameter> parameters = null)
     {
       try
       {
         SQLiteCommand command = new SQLiteCommand(query, connection);
+        if (parameters != null)
+        {
+          foreach (var p in parameters)
+          {
+            command.Parameters.Add(p.Value);
+          }
+        }
         command.ExecuteNonQuery();
         return true;
       }
@@ -81,6 +88,36 @@ namespace FreelanceManager
       {
         MessageBox.Show(err.Message);
         return false;
+      }
+    }
+
+    public DbDataRecord ExecuteCommand(ref SQLiteDataAdapter adapter, string query, Dictionary<string, SQLiteParameter> parameters = null)
+    {
+      if (query == null)
+      {
+        throw new Exception("fmDB: no query is assigned");
+      }
+      try
+      {
+        SQLiteCommand command = new SQLiteCommand(query, connection);
+        if (parameters != null)
+        {
+          foreach (var p in parameters)
+          {
+            command.Parameters.Add(p.Value);
+          }
+        }
+        SQLiteDataReader reader = command.ExecuteReader();
+        foreach (DbDataRecord r in reader)
+        {
+          return r;
+        }
+        return null;
+      }
+      catch (Exception err)
+      {
+        MessageBox.Show(err.Message);
+        return null;
       }
     }
 
@@ -556,6 +593,56 @@ namespace FreelanceManager
       selectParams[pidSource.ParameterName] = pidSource;
 
       return ExecuteQuery(ref adapter, select, selectParams);
+    }
+
+    public void ExecuteMultiplication(ref SQLiteDataAdapter adapter, Int32 _idTask)
+    {
+      const string idTask = "idTask";
+      const string idTaskParam = "@" + idTask;
+      const string SubtaskCount = "SubtaskCount";
+      const string SubtaskNumber = "SubtaskNumber";
+      const string SubtaskNumberParam = "@" + SubtaskNumber;
+      const string idNewTaskParam = "@idNewTask";
+
+      SQLiteParameter pidTask = new SQLiteParameter();
+      pidTask.ParameterName = idTaskParam;
+      pidTask.DbType = DbType.Int32;
+      pidTask.Size = 4;
+      pidTask.Value = _idTask;
+
+      const string getSubtaskCountQuery = "select SubtaskCount, SubtaskNumber from tblTasks where idTask = @idTask;";
+      Dictionary<string, SQLiteParameter> getSubtaskCountQueryParams = new Dictionary<string, SQLiteParameter>();
+      getSubtaskCountQueryParams[pidTask.ParameterName] = pidTask;
+
+      DbDataRecord getSubtaskCountRecord = ExecuteCommand(ref adapter, getSubtaskCountQuery, getSubtaskCountQueryParams);
+      int _SubtaskCount = Convert.ToInt32(getSubtaskCountRecord[SubtaskCount].ToString());
+      int _SubtaskNumber = Convert.ToInt32(getSubtaskCountRecord[SubtaskNumber].ToString());
+      const string CopyRecord = "insert into tblTasks (idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, SubtaskNumber, TaskReceiveDate, TaskDeadlineDate, FirstDoneVersionDate, Cost, idStatus, Remark) select idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, @SubtaskNumber, TaskReceiveDate, TaskDeadlineDate, FirstDoneVersionDate, Cost, idStatus, Remark from tblTasks where idTask = @idTask;";
+      Dictionary<string, SQLiteParameter> CopyRecordQueryParams = new Dictionary<string, SQLiteParameter>();
+      CopyRecordQueryParams[pidTask.ParameterName] = pidTask;
+      SQLiteParameter pSubtaskNumber = new SQLiteParameter();
+      pSubtaskNumber.ParameterName = SubtaskNumberParam;
+      pSubtaskNumber.DbType = DbType.Int32;
+      pSubtaskNumber.Size = 4;
+      const string CopyRecordLinks = "insert into tblTasksLinks (idTask, Link, LinkName) select @idNewTask, Link, LinkName from tblTasksLinks where idTask = @idTask;";
+      SQLiteParameter pNewTask = new SQLiteParameter();
+      pNewTask.ParameterName = idNewTaskParam;
+      pNewTask.DbType = DbType.Int32;
+      pNewTask.Size = 4;
+      Dictionary<string, SQLiteParameter> CopyRecordLinksParams = new Dictionary<string, SQLiteParameter>();
+      const string getLastInsertIDQuery = "select last_insert_rowid();";
+      
+      for (int i = _SubtaskNumber + 1; i <= _SubtaskCount; i++)
+      {
+        pSubtaskNumber.Value = i;
+        CopyRecordQueryParams[pSubtaskNumber.ParameterName] = pSubtaskNumber;
+        ExecuteNonQuery(CopyRecord, CopyRecordQueryParams);
+        DbDataRecord getLastInsertIDRecord = ExecuteCommand(ref adapter, getLastInsertIDQuery);
+        pNewTask.Value = Convert.ToInt32(getLastInsertIDRecord[0].ToString());
+        CopyRecordLinksParams[pNewTask.ParameterName] = pNewTask;
+        CopyRecordLinksParams[pidTask.ParameterName] = pidTask;
+        ExecuteNonQuery(CopyRecordLinks, CopyRecordLinksParams);
+      }
     }
 
   }

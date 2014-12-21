@@ -679,5 +679,22 @@ namespace FreelanceManager
       frm.cbSource.ValueMember = "idSource";
       frm.ShowDialog();
     }
+
+    private void menuMult_Click(object sender, EventArgs e)
+    {
+      if (tblTasks.CurrentCell == null)
+        return;
+      int rowindex = tblTasks.CurrentCell.RowIndex;
+      if (rowindex < 0)
+        return; 
+      SQLiteDataAdapter adapter = null;
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      db.ExecuteMultiplication(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["idTask"].Value));
+      ShowTasks();
+    }
+
   }
 }
