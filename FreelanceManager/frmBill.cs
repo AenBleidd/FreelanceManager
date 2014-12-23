@@ -66,16 +66,12 @@ namespace FreelanceManager
 
       
 
-      btnSendMail.Enabled = true;
+      btnSendMail.Enabled = false;
       btnCopyToClipboard.Enabled = false;
-      btnCreateBill.Enabled = false;
+      btnCreateBill.Enabled = t.Rows.Count > 0;
+      btnMarkAsPayed.Enabled = t.Rows.Count > 0;
 
       rtbBill.Clear();
-
-      if (t.Rows.Count > 0)
-      {
-        btnCreateBill.Enabled = true;
-      }
     }
 
     private void btnCreateBill_Click(object sender, EventArgs e)
@@ -132,6 +128,14 @@ namespace FreelanceManager
     {
       fmGMail gmail = new fmGMail();
       gmail.SendMessage("lestat.de.lionkur@gmail.com", "Some subject", "Some body");
+    }
+
+    private void btnMarkAsPayed_Click(object sender, EventArgs e)
+    {
+      if (MessageBox.Show("Отметить все как оплаченные?", "Оплата", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+      {
+        db.MarkAsPayed(id);
+      }
     }
   }
 }

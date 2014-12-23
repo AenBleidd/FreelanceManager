@@ -595,6 +595,24 @@ namespace FreelanceManager
       return ExecuteQuery(ref adapter, select, selectParams);
     }
 
+    public void MarkAsPayed(Int32 _idSource)
+    {
+      const string idSource = "idSource";
+      const string idSourceParam = "@" + idSource;
+
+      SQLiteParameter pidSource = new SQLiteParameter();
+      pidSource.ParameterName = idSourceParam;
+      pidSource.DbType = DbType.Int32;
+      pidSource.Size = 4;
+      pidSource.Value = _idSource;
+
+      const string query = "update tblTasks set idStatus = 3 where idStatus = 7 and idSource = @idSource";
+      Dictionary<string, SQLiteParameter> queryParams = new Dictionary<string, SQLiteParameter>();
+      queryParams[pidSource.ParameterName] = pidSource;
+
+      ExecuteNonQuery(query, queryParams);
+    }
+
     public void ExecuteMultiplication(ref SQLiteDataAdapter adapter, Int32 _idTask)
     {
       const string idTask = "idTask";

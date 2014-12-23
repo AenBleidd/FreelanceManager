@@ -678,6 +678,7 @@ namespace FreelanceManager
       frm.cbSource.DisplayMember = "SourceName";
       frm.cbSource.ValueMember = "idSource";
       frm.ShowDialog();
+      ShowTasks();
     }
 
     private void menuMult_Click(object sender, EventArgs e)
@@ -692,8 +693,11 @@ namespace FreelanceManager
       {
         throw new Exception("fmDB is not assigned!");
       }
-      db.ExecuteMultiplication(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["idTask"].Value));
-      ShowTasks();
+      if (MessageBox.Show("Размножить текущую запись?", "Размножить", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+      {
+        db.ExecuteMultiplication(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["idTask"].Value));
+        ShowTasks();
+      }
     }
 
   }

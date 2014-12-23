@@ -39,7 +39,7 @@ namespace FreelanceManager
             GmailService.Scope.GmailCompose, 
             Oauth2Service.Scope.UserinfoEmail
           },
-          "user3",
+          "user",
           CancellationToken.None).Result;       
       }
       catch (AggregateException err)
