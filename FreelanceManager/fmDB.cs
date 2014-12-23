@@ -663,5 +663,11 @@ namespace FreelanceManager
       }
     }
 
+    public DataTable ExecuteMonthPayedStatistics(ref SQLiteDataAdapter adapter)
+    {
+      const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [Period], sum(Cost) as Summ from tblTasks where idStatus = 3 group by Period order by Period;";
+      return ExecuteQuery(ref adapter, query);
+    }
+
   }
 }

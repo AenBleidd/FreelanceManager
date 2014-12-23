@@ -35,8 +35,11 @@
       this.menuBill = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
       this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuShowStatistics = new System.Windows.Forms.ToolStripMenuItem();
       this.редактироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+      this.menuMult = new System.Windows.Forms.ToolStripMenuItem();
       this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.menuReferenceSources = new System.Windows.Forms.ToolStripMenuItem();
       this.menuReferenceStatuses = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,8 +82,7 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-      this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-      this.menuMult = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -115,6 +117,8 @@
       this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuBill,
             this.toolStripMenuItem1,
+            this.menuShowStatistics,
+            this.toolStripMenuItem4,
             this.menuExit});
       this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
       this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -139,10 +143,18 @@
       this.menuExit.Text = "Выход";
       this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
       // 
+      // menuShowStatistics
+      // 
+      this.menuShowStatistics.Name = "menuShowStatistics";
+      this.menuShowStatistics.Size = new System.Drawing.Size(158, 22);
+      this.menuShowStatistics.Text = "Статистика";
+      this.menuShowStatistics.Click += new System.EventHandler(this.menuShowStatistics_Click);
+      // 
       // редактироватьToolStripMenuItem
       // 
       this.редактироватьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuSave,
+            this.toolStripMenuItem2,
             this.menuMult});
       this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
       this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
@@ -155,6 +167,18 @@
       this.menuSave.Size = new System.Drawing.Size(172, 22);
       this.menuSave.Text = "Сохранить";
       this.menuSave.Click += new System.EventHandler(this.menuSave_Click);
+      // 
+      // toolStripMenuItem2
+      // 
+      this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+      this.toolStripMenuItem2.Size = new System.Drawing.Size(169, 6);
+      // 
+      // menuMult
+      // 
+      this.menuMult.Name = "menuMult";
+      this.menuMult.Size = new System.Drawing.Size(172, 22);
+      this.menuMult.Text = "Размножить";
+      this.menuMult.Click += new System.EventHandler(this.menuMult_Click);
       // 
       // справочникиToolStripMenuItem
       // 
@@ -212,9 +236,9 @@
       this.panel1.Controls.Add(this.panel2);
       this.panel1.Controls.Add(this.panel4);
       this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.panel1.Location = new System.Drawing.Point(0, 49);
+      this.panel1.Location = new System.Drawing.Point(0, 24);
       this.panel1.Name = "panel1";
-      this.panel1.Size = new System.Drawing.Size(713, 445);
+      this.panel1.Size = new System.Drawing.Size(713, 470);
       this.panel1.TabIndex = 1;
       // 
       // splitter1
@@ -222,7 +246,7 @@
       this.splitter1.Dock = System.Windows.Forms.DockStyle.Right;
       this.splitter1.Location = new System.Drawing.Point(452, 0);
       this.splitter1.Name = "splitter1";
-      this.splitter1.Size = new System.Drawing.Size(3, 445);
+      this.splitter1.Size = new System.Drawing.Size(3, 470);
       this.splitter1.TabIndex = 5;
       this.splitter1.TabStop = false;
       // 
@@ -233,7 +257,7 @@
       this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
       this.panel2.Location = new System.Drawing.Point(0, 0);
       this.panel2.Name = "panel2";
-      this.panel2.Size = new System.Drawing.Size(455, 445);
+      this.panel2.Size = new System.Drawing.Size(455, 470);
       this.panel2.TabIndex = 6;
       // 
       // tblTasks
@@ -244,7 +268,7 @@
       this.tblTasks.Location = new System.Drawing.Point(0, 0);
       this.tblTasks.MultiSelect = false;
       this.tblTasks.Name = "tblTasks";
-      this.tblTasks.Size = new System.Drawing.Size(455, 417);
+      this.tblTasks.Size = new System.Drawing.Size(455, 442);
       this.tblTasks.TabIndex = 1;
       this.tblTasks.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.tblTasks_CellPainting);
       this.tblTasks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblTasks_RowLeave);
@@ -253,7 +277,7 @@
       // 
       this.panel3.Controls.Add(this.navTasks);
       this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel3.Location = new System.Drawing.Point(0, 417);
+      this.panel3.Location = new System.Drawing.Point(0, 442);
       this.panel3.Name = "panel3";
       this.panel3.Size = new System.Drawing.Size(455, 28);
       this.panel3.TabIndex = 0;
@@ -284,7 +308,7 @@
       this.navTasks.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
       this.navTasks.Name = "navTasks";
       this.navTasks.PositionItem = this.bindingNavigatorPositionItem;
-      this.navTasks.Size = new System.Drawing.Size(263, 25);
+      this.navTasks.Size = new System.Drawing.Size(255, 25);
       this.navTasks.TabIndex = 0;
       this.navTasks.Text = "bindingNavigator1";
       // 
@@ -300,8 +324,8 @@
       // bindingNavigatorCountItem
       // 
       this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(43, 22);
-      this.bindingNavigatorCountItem.Text = "для {0}";
+      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem.Text = "of {0}";
       this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem
@@ -381,7 +405,7 @@
       this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
       this.panel4.Location = new System.Drawing.Point(455, 0);
       this.panel4.Name = "panel4";
-      this.panel4.Size = new System.Drawing.Size(258, 445);
+      this.panel4.Size = new System.Drawing.Size(258, 470);
       this.panel4.TabIndex = 4;
       // 
       // tblLinks
@@ -392,7 +416,7 @@
       this.tblLinks.Location = new System.Drawing.Point(0, 0);
       this.tblLinks.MultiSelect = false;
       this.tblLinks.Name = "tblLinks";
-      this.tblLinks.Size = new System.Drawing.Size(258, 394);
+      this.tblLinks.Size = new System.Drawing.Size(258, 419);
       this.tblLinks.TabIndex = 1;
       this.tblLinks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_CellDoubleClick);
       this.tblLinks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_RowLeave);
@@ -402,7 +426,7 @@
       this.panel6.Controls.Add(this.btnOpenFile);
       this.panel6.Controls.Add(this.btnOpenLink);
       this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel6.Location = new System.Drawing.Point(0, 394);
+      this.panel6.Location = new System.Drawing.Point(0, 419);
       this.panel6.Name = "panel6";
       this.panel6.Size = new System.Drawing.Size(258, 23);
       this.panel6.TabIndex = 2;
@@ -433,7 +457,7 @@
       // 
       this.panel5.Controls.Add(this.navLinks);
       this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel5.Location = new System.Drawing.Point(0, 417);
+      this.panel5.Location = new System.Drawing.Point(0, 442);
       this.panel5.Name = "panel5";
       this.panel5.Size = new System.Drawing.Size(258, 28);
       this.panel5.TabIndex = 0;
@@ -464,7 +488,7 @@
       this.navLinks.MovePreviousItem = this.bindingNavigatorMovePreviousItem1;
       this.navLinks.Name = "navLinks";
       this.navLinks.PositionItem = this.bindingNavigatorPositionItem1;
-      this.navLinks.Size = new System.Drawing.Size(263, 25);
+      this.navLinks.Size = new System.Drawing.Size(255, 25);
       this.navLinks.TabIndex = 0;
       this.navLinks.Text = "bindingNavigator1";
       // 
@@ -480,8 +504,8 @@
       // bindingNavigatorCountItem1
       // 
       this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
-      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(43, 22);
-      this.bindingNavigatorCountItem1.Text = "для {0}";
+      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem1.Text = "of {0}";
       this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem1
@@ -553,20 +577,10 @@
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
       // 
-      // toolStrip1
+      // toolStripMenuItem4
       // 
-      this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-      this.toolStrip1.Name = "toolStrip1";
-      this.toolStrip1.Size = new System.Drawing.Size(713, 25);
-      this.toolStrip1.TabIndex = 2;
-      this.toolStrip1.Text = "toolStrip1";
-      // 
-      // menuMult
-      // 
-      this.menuMult.Name = "menuMult";
-      this.menuMult.Size = new System.Drawing.Size(172, 22);
-      this.menuMult.Text = "Размножить";
-      this.menuMult.Click += new System.EventHandler(this.menuMult_Click);
+      this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+      this.toolStripMenuItem4.Size = new System.Drawing.Size(155, 6);
       // 
       // frmMain
       // 
@@ -574,7 +588,6 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(713, 494);
       this.Controls.Add(this.panel1);
-      this.Controls.Add(this.toolStrip1);
       this.Controls.Add(this.menuStrip1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MainMenuStrip = this.menuStrip1;
@@ -658,10 +671,12 @@
     private System.Windows.Forms.Panel panel6;
     private System.Windows.Forms.Button btnOpenFile;
     private System.Windows.Forms.Button btnOpenLink;
-    private System.Windows.Forms.ToolStrip toolStrip1;
     private System.Windows.Forms.ToolStripMenuItem menuBill;
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     private System.Windows.Forms.ToolStripMenuItem menuMult;
+    private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+    private System.Windows.Forms.ToolStripMenuItem menuShowStatistics;
+    private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 
   }
 }

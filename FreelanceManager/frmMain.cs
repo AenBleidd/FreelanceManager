@@ -700,5 +700,42 @@ namespace FreelanceManager
       }
     }
 
+    private void menuShowStatistics_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      frmStatistics frm = new frmStatistics(db);
+      SQLiteDataAdapter adapter = null;
+      DataTable tableStatistics = db.ExecuteMonthPayedStatistics(ref adapter);
+      frm.tblData.DataSource = tableStatistics;
+      foreach (DataGridViewColumn c in frm.tblData.Columns)
+      {
+        if (c.Name == "Summ")
+        {
+          c.HeaderText = "Доход";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+          c.ReadOnly = true;
+        }
+        else if (c.Name == "Period")
+        {
+          c.HeaderText = "Период";
+          c.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+          c.ReadOnly = true;
+        }
+        else
+        {
+          c.Visible = false;
+        }
+      }
+      foreach (DataRow r in tableStatistics.Rows)
+      {
+        frm.chartMonth.Series["seriesMonth"].Points.Add(Convert.ToDouble(r["Summ"].ToString()));
+        frm.chartMonth.Series["seriesMonth"].Points[frm.chartMonth.Series["seriesMonth"].Points.Count - 1].AxisLabel = r["Period"].ToString();
+      }
+      frm.ShowDialog();
+    }
+
   }
 }
