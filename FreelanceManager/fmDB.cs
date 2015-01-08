@@ -701,5 +701,3 @@ namespace FreelanceManager
 
   }
 }
-
-// update tblTasks set isArchived = 1 where case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end = '10.2014'
