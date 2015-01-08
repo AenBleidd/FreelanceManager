@@ -33,9 +33,11 @@
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.menuBill = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuArchive = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-      this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
       this.menuShowStatistics = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+      this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
       this.редактироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -82,7 +84,6 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-      this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -116,6 +117,7 @@
       // 
       this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuBill,
+            this.menuArchive,
             this.toolStripMenuItem1,
             this.menuShowStatistics,
             this.toolStripMenuItem4,
@@ -131,17 +133,17 @@
       this.menuBill.Text = "Выставить счет";
       this.menuBill.Click += new System.EventHandler(this.menuBill_Click);
       // 
+      // menuArchive
+      // 
+      this.menuArchive.Name = "menuArchive";
+      this.menuArchive.Size = new System.Drawing.Size(158, 22);
+      this.menuArchive.Text = "Архивировать";
+      this.menuArchive.Click += new System.EventHandler(this.menuArchive_Click);
+      // 
       // toolStripMenuItem1
       // 
       this.toolStripMenuItem1.Name = "toolStripMenuItem1";
       this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
-      // 
-      // menuExit
-      // 
-      this.menuExit.Name = "menuExit";
-      this.menuExit.Size = new System.Drawing.Size(158, 22);
-      this.menuExit.Text = "Выход";
-      this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
       // 
       // menuShowStatistics
       // 
@@ -149,6 +151,18 @@
       this.menuShowStatistics.Size = new System.Drawing.Size(158, 22);
       this.menuShowStatistics.Text = "Статистика";
       this.menuShowStatistics.Click += new System.EventHandler(this.menuShowStatistics_Click);
+      // 
+      // toolStripMenuItem4
+      // 
+      this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+      this.toolStripMenuItem4.Size = new System.Drawing.Size(155, 6);
+      // 
+      // menuExit
+      // 
+      this.menuExit.Name = "menuExit";
+      this.menuExit.Size = new System.Drawing.Size(158, 22);
+      this.menuExit.Text = "Выход";
+      this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
       // 
       // редактироватьToolStripMenuItem
       // 
@@ -308,7 +322,7 @@
       this.navTasks.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
       this.navTasks.Name = "navTasks";
       this.navTasks.PositionItem = this.bindingNavigatorPositionItem;
-      this.navTasks.Size = new System.Drawing.Size(255, 25);
+      this.navTasks.Size = new System.Drawing.Size(263, 25);
       this.navTasks.TabIndex = 0;
       this.navTasks.Text = "bindingNavigator1";
       // 
@@ -324,8 +338,8 @@
       // bindingNavigatorCountItem
       // 
       this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
-      this.bindingNavigatorCountItem.Text = "of {0}";
+      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(43, 22);
+      this.bindingNavigatorCountItem.Text = "для {0}";
       this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem
@@ -488,7 +502,7 @@
       this.navLinks.MovePreviousItem = this.bindingNavigatorMovePreviousItem1;
       this.navLinks.Name = "navLinks";
       this.navLinks.PositionItem = this.bindingNavigatorPositionItem1;
-      this.navLinks.Size = new System.Drawing.Size(255, 25);
+      this.navLinks.Size = new System.Drawing.Size(263, 25);
       this.navLinks.TabIndex = 0;
       this.navLinks.Text = "bindingNavigator1";
       // 
@@ -504,8 +518,8 @@
       // bindingNavigatorCountItem1
       // 
       this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
-      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
-      this.bindingNavigatorCountItem1.Text = "of {0}";
+      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(43, 22);
+      this.bindingNavigatorCountItem1.Text = "для {0}";
       this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem1
@@ -576,11 +590,6 @@
       // 
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
-      // 
-      // toolStripMenuItem4
-      // 
-      this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-      this.toolStripMenuItem4.Size = new System.Drawing.Size(155, 6);
       // 
       // frmMain
       // 
@@ -677,6 +686,7 @@
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     private System.Windows.Forms.ToolStripMenuItem menuShowStatistics;
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+    private System.Windows.Forms.ToolStripMenuItem menuArchive;
 
   }
 }

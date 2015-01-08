@@ -41,6 +41,7 @@ create table if not exists "tblTasks"
 , [Cost] decimal(18, 2) not null
 , [idStatus] integer not null
 , [Remark] varchar(4000)
+, [isArchived] bit not null default 0
 , foreign key ([idSource]) references [tblSources] ([idSource])
 , foreign key ([idLanguage]) references [tblLanguages] ([idLanguage])
 , foreign key ([idStatus]) references [tblStatuses] ([idStatus])

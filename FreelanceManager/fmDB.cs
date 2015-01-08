@@ -669,5 +669,37 @@ namespace FreelanceManager
       return ExecuteQuery(ref adapter, query);
     }
 
+    public DataTable ExecuteGetTasksToArchive(ref SQLiteDataAdapter adapter, string _Date)
+    {
+      const string Date = "strDate";
+      const string DateParam = "@" + Date;
+      SQLiteParameter pDate = new SQLiteParameter();
+      pDate.ParameterName = DateParam;
+      pDate.DbType = DbType.String;
+      pDate.Size = 10;
+      pDate.Value = _Date;
+      Dictionary<string, SQLiteParameter> queryParams = new Dictionary<string, SQLiteParameter>();
+      queryParams[pDate.ParameterName] = pDate;
+      const string query = "select TaskNumber from tblTasks where idStatus in (2, 3, 4) and isArchived = 0 and case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end = @strDate group by TaskNumber;";
+      return ExecuteQuery(ref adapter, query, queryParams);
+    }
+
+    public void ExecuteSetArchivedTasks(ref SQLiteDataAdapter adapter, string _Date)
+    {
+      const string Date = "strDate";
+      const string DateParam = "@" + Date;
+      SQLiteParameter pDate = new SQLiteParameter();
+      pDate.ParameterName = DateParam;
+      pDate.DbType = DbType.String;
+      pDate.Size = 10;
+      pDate.Value = _Date;
+      Dictionary<string, SQLiteParameter> queryParams = new Dictionary<string, SQLiteParameter>();
+      queryParams[pDate.ParameterName] = pDate;
+      const string query = "update tblTasks set isArchived = 1 where idStatus in (2, 3, 4) and isArchived = 0 and case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end = @strDate";
+      ExecuteNonQuery(query, queryParams);
+    }
+
   }
 }
+
+// update tblTasks set isArchived = 1 where case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end = '10.2014'

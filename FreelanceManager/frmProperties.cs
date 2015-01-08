@@ -47,6 +47,16 @@ namespace FreelanceManager
       edtFreelanceDirectoryPath.Text = strFreelanceDirectoryPath;
     }
 
+    public string get7ZipDirectoryPath()
+    {
+      return edt7ZipDirectoryPath.Text;
+    }
+
+    public void set7ZipDirectoryPath(string str7ZipDirectoryPath)
+    {
+      edt7ZipDirectoryPath.Text = str7ZipDirectoryPath;
+    }
+
     private void btnOk_Click(object sender, EventArgs e)
     {
       if (edtDBPath.TextLength == 0)
@@ -62,6 +72,11 @@ namespace FreelanceManager
       if (edtFreelanceDirectoryPath.TextLength == 0)
       {
         MessageBox.Show("Поле \"Расположение папки Freelance\" обязательно к заполнению", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+      }
+      if (edt7ZipDirectoryPath.TextLength == 0)
+      {
+        MessageBox.Show("Поле \"Расположение папки 7-Zip\" обязательно к заполнению", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         return;
       }
       DialogResult = DialogResult.OK;
@@ -100,6 +115,18 @@ namespace FreelanceManager
       if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
       {
         edtFreelanceDirectoryPath.Text = folderBrowserDialog.SelectedPath;
+      }
+    }
+
+    private void btn7ZipDirectoryPathOpen_Click(object sender, EventArgs e)
+    {
+      if (edt7ZipDirectoryPath.TextLength != 0)
+      {
+        folderBrowserDialog.SelectedPath = edt7ZipDirectoryPath.Text;
+      }
+      if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+      {
+        edt7ZipDirectoryPath.Text = folderBrowserDialog.SelectedPath;
       }
     }
   }

@@ -13,10 +13,11 @@ namespace FreelanceManager
 {
   public class fmProperties
   {
-    const string regMainPath = "Software\\Freelance Manager";
-    const string regstrDBPath = "DBPath";
-    const string regstrFreelanceDirectoryPath = "FreelanceDirectoryPath";
-    const string regstrGooglDriveRootPath = "GoogleDriveRootPath";
+    private const string regMainPath = "Software\\Freelance Manager";
+    private const string regstrDBPath = "DBPath";
+    private const string regstrFreelanceDirectoryPath = "FreelanceDirectoryPath";
+    private const string regstrGooglDriveRootPath = "GoogleDriveRootPath";
+    private const string regstr7ZipDirectoryPath = "7ZipDirectoryPath";
 
     public void Load(bool showWindow = true)
     {
@@ -56,6 +57,15 @@ namespace FreelanceManager
         {
           strGoogleDriveRootPath = t.ToString();
         }
+        t = key.GetValue(regstr7ZipDirectoryPath);
+        if (t == null || t.ToString() == "")
+        {
+          result = false;
+        }
+        else
+        {
+          str7ZipDirectoryPath = t.ToString();
+        }
       }
       if (key != null) key.Close();
       if (result == false && showWindow)
@@ -87,6 +97,7 @@ namespace FreelanceManager
       frm.setDBPath(strDBPath);
       frm.setFreelanceDirectoryPath(strFreelanceDirectoryPath);
       frm.setGoogleDriveRootPath(strGoogleDriveRootPath);
+      frm.set7ZipDirectoryPath(str7ZipDirectoryPath);
     }
 
     private void getOptionsFromForm(frmProperties frm)
@@ -94,6 +105,7 @@ namespace FreelanceManager
       strDBPath = frm.getDBPath();
       strGoogleDriveRootPath = frm.getGoogleDriveRootPath();
       strFreelanceDirectoryPath = frm.getFreelanceDirectoryPath();
+      str7ZipDirectoryPath = frm.get7ZipDirectoryPath();
     }
 
     public void Save()
@@ -102,6 +114,7 @@ namespace FreelanceManager
       key.SetValue(regstrDBPath, strDBPath);
       key.SetValue(regstrFreelanceDirectoryPath, strFreelanceDirectoryPath);
       key.SetValue(regstrGooglDriveRootPath, strGoogleDriveRootPath);
+      key.SetValue(regstr7ZipDirectoryPath, str7ZipDirectoryPath);
       key.Close();
     }
     public string strDBPath
@@ -119,8 +132,14 @@ namespace FreelanceManager
       get { return _strGoogleDriveRootPath; }
       set { _strGoogleDriveRootPath = value; }
     }
+    public string str7ZipDirectoryPath
+    {
+      get { return _str7ZipDirectoryPath; }
+      set { _str7ZipDirectoryPath = value; }
+    }
     private string _strDBPath;
     private string _strFreelanceDirectoryPath;
     private string _strGoogleDriveRootPath;
+    private string _str7ZipDirectoryPath;
   }
 }

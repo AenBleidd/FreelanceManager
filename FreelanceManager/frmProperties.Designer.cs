@@ -29,6 +29,8 @@
     private void InitializeComponent()
     {
       this.panel1 = new System.Windows.Forms.Panel();
+      this.btnCancel = new System.Windows.Forms.Button();
+      this.btnOk = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
       this.label2 = new System.Windows.Forms.Label();
       this.label3 = new System.Windows.Forms.Label();
@@ -38,9 +40,10 @@
       this.btnDBPathOpen = new System.Windows.Forms.Button();
       this.btnGoogleDriveRootPathOpen = new System.Windows.Forms.Button();
       this.btnFreelanceDirectoryPathOpen = new System.Windows.Forms.Button();
-      this.btnOk = new System.Windows.Forms.Button();
-      this.btnCancel = new System.Windows.Forms.Button();
       this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+      this.btn7ZipDirectoryPathOpen = new System.Windows.Forms.Button();
+      this.edt7ZipDirectoryPath = new System.Windows.Forms.TextBox();
+      this.label4 = new System.Windows.Forms.Label();
       this.panel1.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -49,10 +52,32 @@
       this.panel1.Controls.Add(this.btnCancel);
       this.panel1.Controls.Add(this.btnOk);
       this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel1.Location = new System.Drawing.Point(0, 82);
+      this.panel1.Location = new System.Drawing.Point(0, 92);
       this.panel1.Name = "panel1";
       this.panel1.Size = new System.Drawing.Size(528, 37);
       this.panel1.TabIndex = 0;
+      // 
+      // btnCancel
+      // 
+      this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.btnCancel.Location = new System.Drawing.Point(441, 7);
+      this.btnCancel.Name = "btnCancel";
+      this.btnCancel.Size = new System.Drawing.Size(75, 23);
+      this.btnCancel.TabIndex = 1;
+      this.btnCancel.Text = "Закрыть";
+      this.btnCancel.UseVisualStyleBackColor = true;
+      // 
+      // btnOk
+      // 
+      this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.btnOk.Location = new System.Drawing.Point(360, 7);
+      this.btnOk.Name = "btnOk";
+      this.btnOk.Size = new System.Drawing.Size(75, 23);
+      this.btnOk.TabIndex = 0;
+      this.btnOk.Text = "Сохранить";
+      this.btnOk.UseVisualStyleBackColor = true;
+      this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
       // 
       // label1
       // 
@@ -87,6 +112,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.edtDBPath.Location = new System.Drawing.Point(200, 6);
       this.edtDBPath.Name = "edtDBPath";
+      this.edtDBPath.ReadOnly = true;
       this.edtDBPath.Size = new System.Drawing.Size(235, 20);
       this.edtDBPath.TabIndex = 4;
       // 
@@ -96,6 +122,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.edtGoogleDriveRootPath.Location = new System.Drawing.Point(200, 27);
       this.edtGoogleDriveRootPath.Name = "edtGoogleDriveRootPath";
+      this.edtGoogleDriveRootPath.ReadOnly = true;
       this.edtGoogleDriveRootPath.Size = new System.Drawing.Size(235, 20);
       this.edtGoogleDriveRootPath.TabIndex = 5;
       // 
@@ -105,6 +132,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.edtFreelanceDirectoryPath.Location = new System.Drawing.Point(200, 48);
       this.edtFreelanceDirectoryPath.Name = "edtFreelanceDirectoryPath";
+      this.edtFreelanceDirectoryPath.ReadOnly = true;
       this.edtFreelanceDirectoryPath.Size = new System.Drawing.Size(235, 20);
       this.edtFreelanceDirectoryPath.TabIndex = 6;
       // 
@@ -141,27 +169,35 @@
       this.btnFreelanceDirectoryPathOpen.UseVisualStyleBackColor = true;
       this.btnFreelanceDirectoryPathOpen.Click += new System.EventHandler(this.btnFreelanceDirectoryPathOpen_Click);
       // 
-      // btnOk
+      // btn7ZipDirectoryPathOpen
       // 
-      this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnOk.Location = new System.Drawing.Point(360, 7);
-      this.btnOk.Name = "btnOk";
-      this.btnOk.Size = new System.Drawing.Size(75, 23);
-      this.btnOk.TabIndex = 0;
-      this.btnOk.Text = "Сохранить";
-      this.btnOk.UseVisualStyleBackColor = true;
-      this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+      this.btn7ZipDirectoryPathOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.btn7ZipDirectoryPathOpen.Location = new System.Drawing.Point(441, 69);
+      this.btn7ZipDirectoryPathOpen.Name = "btn7ZipDirectoryPathOpen";
+      this.btn7ZipDirectoryPathOpen.Size = new System.Drawing.Size(75, 20);
+      this.btn7ZipDirectoryPathOpen.TabIndex = 12;
+      this.btn7ZipDirectoryPathOpen.Text = "Обзор";
+      this.btn7ZipDirectoryPathOpen.UseVisualStyleBackColor = true;
+      this.btn7ZipDirectoryPathOpen.Click += new System.EventHandler(this.btn7ZipDirectoryPathOpen_Click);
       // 
-      // btnCancel
+      // edt7ZipDirectoryPath
       // 
-      this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.btnCancel.Location = new System.Drawing.Point(441, 7);
-      this.btnCancel.Name = "btnCancel";
-      this.btnCancel.Size = new System.Drawing.Size(75, 23);
-      this.btnCancel.TabIndex = 1;
-      this.btnCancel.Text = "Закрыть";
-      this.btnCancel.UseVisualStyleBackColor = true;
+      this.edt7ZipDirectoryPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.edt7ZipDirectoryPath.Location = new System.Drawing.Point(200, 69);
+      this.edt7ZipDirectoryPath.Name = "edt7ZipDirectoryPath";
+      this.edt7ZipDirectoryPath.ReadOnly = true;
+      this.edt7ZipDirectoryPath.Size = new System.Drawing.Size(235, 20);
+      this.edt7ZipDirectoryPath.TabIndex = 11;
+      // 
+      // label4
+      // 
+      this.label4.AutoSize = true;
+      this.label4.Location = new System.Drawing.Point(12, 72);
+      this.label4.Name = "label4";
+      this.label4.Size = new System.Drawing.Size(142, 13);
+      this.label4.TabIndex = 10;
+      this.label4.Text = "Расположение папки 7-Zip";
       // 
       // frmProperties
       // 
@@ -169,7 +205,10 @@
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.btnCancel;
-      this.ClientSize = new System.Drawing.Size(528, 119);
+      this.ClientSize = new System.Drawing.Size(528, 129);
+      this.Controls.Add(this.btn7ZipDirectoryPathOpen);
+      this.Controls.Add(this.edt7ZipDirectoryPath);
+      this.Controls.Add(this.label4);
       this.Controls.Add(this.btnFreelanceDirectoryPathOpen);
       this.Controls.Add(this.btnGoogleDriveRootPathOpen);
       this.Controls.Add(this.btnDBPathOpen);
@@ -204,5 +243,8 @@
     private System.Windows.Forms.Button btnCancel;
     private System.Windows.Forms.Button btnOk;
     private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+    private System.Windows.Forms.Button btn7ZipDirectoryPathOpen;
+    private System.Windows.Forms.TextBox edt7ZipDirectoryPath;
+    private System.Windows.Forms.Label label4;
   }
 }
