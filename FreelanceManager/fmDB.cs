@@ -24,9 +24,9 @@ namespace FreelanceManager
       {
         factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
       }
-      catch
+      catch (Exception ex)
       {
-        MessageBox.Show("Не установлен System.Data.SQLite (1.0.93.0)", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        MessageBox.Show("Не установлен System.Data.SQLite (1.0.94.0)" + Environment.NewLine + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
         Application.Exit();
       }
     }
@@ -665,7 +665,7 @@ namespace FreelanceManager
 
     public DataTable ExecuteMonthPayedStatistics(ref SQLiteDataAdapter adapter)
     {
-      const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [Period], sum(Cost) as Summ from tblTasks where idStatus = 3 group by Period order by Period;";
+      const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [Period], sum(Cost) as Summ, case when TaskDeadlineDate is null then printf('%s.%s', strftime('%Y', TaskReceiveDate), strftime('%m', TaskReceiveDate)) else printf('%s.%s', strftime('%Y', TaskDeadlineDate), strftime('%m', TaskDeadlineDate)) end as [PeriodSort] from tblTasks where idStatus = 3 group by Period order by PeriodSort;";
       return ExecuteQuery(ref adapter, query);
     }
 
@@ -697,6 +697,38 @@ namespace FreelanceManager
       queryParams[pDate.ParameterName] = pDate;
       const string query = "update tblTasks set isArchived = 1 where idStatus in (2, 3, 4) and isArchived = 0 and case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end = @strDate";
       ExecuteNonQuery(query, queryParams);
+    }
+
+    public void CopyTask(ref SQLiteDataAdapter adapter, Int32 _idTask)
+    {
+      const string idTask = "idTask";
+      const string idTaskParam = "@" + idTask;
+      const string idNewTaskParam = "@idNewTask";
+
+      SQLiteParameter pidTask = new SQLiteParameter();
+      pidTask.ParameterName = idTaskParam;
+      pidTask.DbType = DbType.Int32;
+      pidTask.Size = 4;
+      pidTask.Value = _idTask;
+
+      const string copyTaskQuery = "insert into tblTasks (idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, SubtaskNumber, TaskReceiveDate, TaskDeadlineDate, FirstDoneVersionDate, Cost, idStatus, Remark, isArchived) select idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, SubtaskNumber, date('now'), null, null, Cost, 1, Remark, 0 from tblTasks where idTask = @idTask;";
+      Dictionary<string, SQLiteParameter> copyTaskQueryParams = new Dictionary<string, SQLiteParameter>();
+      copyTaskQueryParams[pidTask.ParameterName] = pidTask;
+
+      const string CopyRecordLinks = "insert into tblTasksLinks (idTask, Link, LinkName) select @idNewTask, Link, LinkName from tblTasksLinks where idTask = @idTask;";
+      SQLiteParameter pNewTask = new SQLiteParameter();
+      pNewTask.ParameterName = idNewTaskParam;
+      pNewTask.DbType = DbType.Int32;
+      pNewTask.Size = 4;
+      Dictionary<string, SQLiteParameter> CopyRecordLinksParams = new Dictionary<string, SQLiteParameter>();
+      const string getLastInsertIDQuery = "select last_insert_rowid();";
+
+      ExecuteNonQuery(copyTaskQuery, copyTaskQueryParams);
+      DbDataRecord getLastInsertIDRecord = ExecuteCommand(ref adapter, getLastInsertIDQuery);
+      pNewTask.Value = Convert.ToInt32(getLastInsertIDRecord[0].ToString());
+      CopyRecordLinksParams[pNewTask.ParameterName] = pNewTask;
+      CopyRecordLinksParams[pidTask.ParameterName] = pidTask;
+      ExecuteNonQuery(CopyRecordLinks, CopyRecordLinksParams);
     }
 
   }

@@ -842,6 +842,25 @@ namespace FreelanceManager
       MessageBox.Show("Готово", "Архивация", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
+    private void menuCopy_Click(object sender, EventArgs e)
+    {
+      if (tblTasks.CurrentCell == null)
+        return;
+      int rowindex = tblTasks.CurrentCell.RowIndex;
+      if (rowindex < 0)
+        return;
+      SQLiteDataAdapter adapter = null;
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      if (MessageBox.Show("Скопировать текущую запись?", "Копирование", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+      {
+        db.CopyTask(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["idTask"].Value));
+        ShowTasks();
+      }
+    }
+
   }
 }
 

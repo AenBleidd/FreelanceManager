@@ -53,6 +53,8 @@
       this.splitter1 = new System.Windows.Forms.Splitter();
       this.panel2 = new System.Windows.Forms.Panel();
       this.tblTasks = new System.Windows.Forms.DataGridView();
+      this.menuTblTasks = new System.Windows.Forms.ContextMenuStrip(this.components);
+      this.menuTblTasksMult = new System.Windows.Forms.ToolStripMenuItem();
       this.panel3 = new System.Windows.Forms.Panel();
       this.navTasks = new System.Windows.Forms.BindingNavigator(this.components);
       this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
@@ -84,11 +86,14 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+      this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuTblTaskCopy = new System.Windows.Forms.ToolStripMenuItem();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
       this.panel2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.tblTasks)).BeginInit();
+      this.menuTblTasks.SuspendLayout();
       this.panel3.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navTasks)).BeginInit();
       this.navTasks.SuspendLayout();
@@ -169,7 +174,8 @@
       this.редактироватьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuSave,
             this.toolStripMenuItem2,
-            this.menuMult});
+            this.menuMult,
+            this.menuCopy});
       this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
       this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
       this.редактироватьToolStripMenuItem.Text = "Редактировать";
@@ -278,6 +284,7 @@
       // 
       this.tblTasks.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
       this.tblTasks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.tblTasks.ContextMenuStrip = this.menuTblTasks;
       this.tblTasks.Dock = System.Windows.Forms.DockStyle.Fill;
       this.tblTasks.Location = new System.Drawing.Point(0, 0);
       this.tblTasks.MultiSelect = false;
@@ -286,6 +293,21 @@
       this.tblTasks.TabIndex = 1;
       this.tblTasks.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.tblTasks_CellPainting);
       this.tblTasks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblTasks_RowLeave);
+      // 
+      // menuTblTasks
+      // 
+      this.menuTblTasks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuTblTasksMult,
+            this.menuTblTaskCopy});
+      this.menuTblTasks.Name = "menuTblTasks";
+      this.menuTblTasks.Size = new System.Drawing.Size(153, 70);
+      // 
+      // menuTblTasksMult
+      // 
+      this.menuTblTasksMult.Name = "menuTblTasksMult";
+      this.menuTblTasksMult.Size = new System.Drawing.Size(152, 22);
+      this.menuTblTasksMult.Text = "Размножить";
+      this.menuTblTasksMult.Click += new System.EventHandler(this.menuMult_Click);
       // 
       // panel3
       // 
@@ -322,7 +344,7 @@
       this.navTasks.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
       this.navTasks.Name = "navTasks";
       this.navTasks.PositionItem = this.bindingNavigatorPositionItem;
-      this.navTasks.Size = new System.Drawing.Size(263, 25);
+      this.navTasks.Size = new System.Drawing.Size(255, 25);
       this.navTasks.TabIndex = 0;
       this.navTasks.Text = "bindingNavigator1";
       // 
@@ -338,8 +360,8 @@
       // bindingNavigatorCountItem
       // 
       this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(43, 22);
-      this.bindingNavigatorCountItem.Text = "для {0}";
+      this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem.Text = "of {0}";
       this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem
@@ -502,7 +524,7 @@
       this.navLinks.MovePreviousItem = this.bindingNavigatorMovePreviousItem1;
       this.navLinks.Name = "navLinks";
       this.navLinks.PositionItem = this.bindingNavigatorPositionItem1;
-      this.navLinks.Size = new System.Drawing.Size(263, 25);
+      this.navLinks.Size = new System.Drawing.Size(255, 25);
       this.navLinks.TabIndex = 0;
       this.navLinks.Text = "bindingNavigator1";
       // 
@@ -518,8 +540,8 @@
       // bindingNavigatorCountItem1
       // 
       this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
-      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(43, 22);
-      this.bindingNavigatorCountItem1.Text = "для {0}";
+      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem1.Text = "of {0}";
       this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
       // 
       // bindingNavigatorDeleteItem1
@@ -591,6 +613,20 @@
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
       // 
+      // menuCopy
+      // 
+      this.menuCopy.Name = "menuCopy";
+      this.menuCopy.Size = new System.Drawing.Size(172, 22);
+      this.menuCopy.Text = "Копировать";
+      this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
+      // 
+      // menuTblTaskCopy
+      // 
+      this.menuTblTaskCopy.Name = "menuTblTaskCopy";
+      this.menuTblTaskCopy.Size = new System.Drawing.Size(152, 22);
+      this.menuTblTaskCopy.Text = "Копировать";
+      this.menuTblTaskCopy.Click += new System.EventHandler(this.menuCopy_Click);
+      // 
       // frmMain
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -613,6 +649,7 @@
       this.panel1.ResumeLayout(false);
       this.panel2.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.tblTasks)).EndInit();
+      this.menuTblTasks.ResumeLayout(false);
       this.panel3.ResumeLayout(false);
       this.panel3.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navTasks)).EndInit();
@@ -687,6 +724,10 @@
     private System.Windows.Forms.ToolStripMenuItem menuShowStatistics;
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
     private System.Windows.Forms.ToolStripMenuItem menuArchive;
+    private System.Windows.Forms.ContextMenuStrip menuTblTasks;
+    private System.Windows.Forms.ToolStripMenuItem menuTblTasksMult;
+    private System.Windows.Forms.ToolStripMenuItem menuCopy;
+    private System.Windows.Forms.ToolStripMenuItem menuTblTaskCopy;
 
   }
 }
