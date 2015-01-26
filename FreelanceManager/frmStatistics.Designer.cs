@@ -28,16 +28,15 @@
     /// </summary>
     private void InitializeComponent()
     {
-      System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-      System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+      System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
       this.panel1 = new System.Windows.Forms.Panel();
+      this.tblData = new System.Windows.Forms.DataGridView();
       this.splitter1 = new System.Windows.Forms.Splitter();
       this.panel2 = new System.Windows.Forms.Panel();
-      this.tblData = new System.Windows.Forms.DataGridView();
       this.chartMonth = new System.Windows.Forms.DataVisualization.Charting.Chart();
       this.panel1.SuspendLayout();
-      this.panel2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.tblData)).BeginInit();
+      this.panel2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.chartMonth)).BeginInit();
       this.SuspendLayout();
       // 
@@ -49,6 +48,18 @@
       this.panel1.Name = "panel1";
       this.panel1.Size = new System.Drawing.Size(180, 474);
       this.panel1.TabIndex = 0;
+      // 
+      // tblData
+      // 
+      this.tblData.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+      this.tblData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.tblData.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.tblData.Location = new System.Drawing.Point(0, 0);
+      this.tblData.Name = "tblData";
+      this.tblData.ReadOnly = true;
+      this.tblData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+      this.tblData.Size = new System.Drawing.Size(180, 474);
+      this.tblData.TabIndex = 0;
       // 
       // splitter1
       // 
@@ -67,31 +78,14 @@
       this.panel2.Size = new System.Drawing.Size(474, 474);
       this.panel2.TabIndex = 2;
       // 
-      // tblData
-      // 
-      this.tblData.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-      this.tblData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.tblData.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.tblData.Location = new System.Drawing.Point(0, 0);
-      this.tblData.Name = "tblData";
-      this.tblData.ReadOnly = true;
-      this.tblData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.tblData.Size = new System.Drawing.Size(180, 474);
-      this.tblData.TabIndex = 0;
-      // 
       // chartMonth
       // 
-      chartArea2.AxisX.Interval = 1D;
-      chartArea2.Name = "areaMonth";
-      this.chartMonth.ChartAreas.Add(chartArea2);
+      chartArea1.AxisX.Interval = 1D;
+      chartArea1.Name = "areaMonth";
+      this.chartMonth.ChartAreas.Add(chartArea1);
       this.chartMonth.Dock = System.Windows.Forms.DockStyle.Fill;
       this.chartMonth.Location = new System.Drawing.Point(0, 0);
       this.chartMonth.Name = "chartMonth";
-      series2.ChartArea = "areaMonth";
-      series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-      series2.IsVisibleInLegend = false;
-      series2.Name = "seriesMonth";
-      this.chartMonth.Series.Add(series2);
       this.chartMonth.Size = new System.Drawing.Size(474, 474);
       this.chartMonth.TabIndex = 0;
       // 
@@ -107,8 +101,8 @@
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "Статистика";
       this.panel1.ResumeLayout(false);
-      this.panel2.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.tblData)).EndInit();
+      this.panel2.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.chartMonth)).EndInit();
       this.ResumeLayout(false);
 

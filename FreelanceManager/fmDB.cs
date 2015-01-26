@@ -207,6 +207,8 @@ namespace FreelanceManager
       const string IsVisibleParam = "@" + IsVisible;
       const string Email = "email";
       const string EMailParam = "@" + Email;
+      const string SourceColor = "SourceColor";
+      const string SourceColorParam = "@" + SourceColor;
 
       SQLiteParameter pID = new SQLiteParameter();
       pID.ParameterName = IdSourceParam;
@@ -232,20 +234,28 @@ namespace FreelanceManager
       pEmail.Size = 256;
       pEmail.SourceColumn = Email;
 
+      SQLiteParameter pColor = new SQLiteParameter();
+      pColor.ParameterName = SourceColorParam;
+      pColor.DbType = DbType.Int32;
+      pColor.Size = 4;
+      pColor.SourceColumn = SourceColor;
+
       const string select = "select * from tblSources;";
 
-      const string insert = "insert into tblSources (SourceName, isVisible, email) values (@SourceName, @isVisible, @email);";
+      const string insert = "insert into tblSources (SourceName, isVisible, email, SourceColor) values (@SourceName, @isVisible, @email, @SourceColor);";
       Dictionary<string, SQLiteParameter> insertParams = new Dictionary<string, SQLiteParameter>();
       insertParams[pName.ParameterName] = pName;
       insertParams[pIsVisible.ParameterName] = pIsVisible;
       insertParams[pEmail.ParameterName] = pEmail;
+      insertParams[pColor.ParameterName] = pColor;
 
-      const string update = "update tblSources set SourceName = @SourceName, isVisible = @isVisible, email = @email where idSource = @idSource;";
+      const string update = "update tblSources set SourceName = @SourceName, isVisible = @isVisible, email = @email, SourceColor = @SourceColor where idSource = @idSource;";
       Dictionary<string, SQLiteParameter> updateParams = new Dictionary<string, SQLiteParameter>();
       updateParams[pName.ParameterName] = pName;
       updateParams[pID.ParameterName] = pID;
       updateParams[pIsVisible.ParameterName] = pIsVisible;
       updateParams[pEmail.ParameterName] = pEmail;
+      updateParams[pColor.ParameterName] = pColor;
 
       const string delete = "delete from tblSources where idSource = @idSource;";
       Dictionary<string, SQLiteParameter> deleteParams = new Dictionary<string, SQLiteParameter>();
@@ -666,6 +676,12 @@ namespace FreelanceManager
     public DataTable ExecuteMonthPayedStatistics(ref SQLiteDataAdapter adapter)
     {
       const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [Period], sum(Cost) as Summ, case when TaskDeadlineDate is null then printf('%s.%s', strftime('%Y', TaskReceiveDate), strftime('%m', TaskReceiveDate)) else printf('%s.%s', strftime('%Y', TaskDeadlineDate), strftime('%m', TaskDeadlineDate)) end as [PeriodSort] from tblTasks where idStatus = 3 group by Period order by PeriodSort;";
+      return ExecuteQuery(ref adapter, query);
+    }
+
+    public DataTable ExecuteMonthPayedStatisticsWithSources(ref SQLiteDataAdapter adapter)
+    {
+      const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [Period], sum(Cost) as Summ, case when TaskDeadlineDate is null then printf('%s.%s', strftime('%Y', TaskReceiveDate), strftime('%m', TaskReceiveDate)) else printf('%s.%s', strftime('%Y', TaskDeadlineDate), strftime('%m', TaskDeadlineDate)) end as [PeriodSort], SourceName from tblTasks inner join tblSources on tblTasks.idSource = tblSources.idSource where idStatus = 3 group by Period, SourceName order by PeriodSort;";
       return ExecuteQuery(ref adapter, query);
     }
 

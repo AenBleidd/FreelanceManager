@@ -123,6 +123,15 @@ namespace FreelanceManager
         }
       }
 
+      DataGridViewButtonColumn btnColor = new DataGridViewButtonColumn();
+      btnColor.HeaderText = "Цвет";
+      btnColor.Name = "btnColor";
+      btnColor.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+      tblData.Columns.Add(btnColor);
+      tempTable = tblData;
+      tblData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(tblData_drawColorButtonSources_CellClick);
+      tblData.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(tblData_drawColorButtonSources_CellPainting);
+
       DataGridViewCheckBoxColumn cbIsVisible = new DataGridViewCheckBoxColumn();
       cbIsVisible.HeaderText = "Включено";
       cbIsVisible.Name = "cbIsVisible";
@@ -209,6 +218,20 @@ namespace FreelanceManager
       }
     }
 
+    private void tblData_drawColorButtonSources_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+    {
+      if (e.RowIndex != -1)
+      {
+        object value = tempTable.Rows[e.RowIndex].Cells["SourceColor"].Value;
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          e.CellStyle.BackColor = Color.FromArgb(Convert.ToInt32(str));
+        }
+      }
+    }
+
     private void tblData_drawColorButton_CellClick(object sender, DataGridViewCellEventArgs e)
     {
       ColorDialog dlg = new ColorDialog();
@@ -227,6 +250,29 @@ namespace FreelanceManager
         if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
           tempTable.Rows[e.RowIndex].Cells["StatusColor"].Value = dlg.Color.ToArgb();
+          tempTable.Invalidate();
+        }
+      }
+    }
+
+    private void tblData_drawColorButtonSources_CellClick(object sender, DataGridViewCellEventArgs e)
+    {
+      ColorDialog dlg = new ColorDialog();
+      if (e.RowIndex != -1 && tempTable.Rows[e.RowIndex].Cells["SourceColor"].Value != DBNull.Value)
+      {
+        object value = tempTable.Rows[e.RowIndex].Cells["SourceColor"].Value;
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          dlg.Color = Color.FromArgb(Convert.ToInt32(str));
+        }
+      }
+      if (e.ColumnIndex == tempTable.Columns["btnColor"].Index && e.RowIndex != -1)
+      {
+        if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+          tempTable.Rows[e.RowIndex].Cells["SourceColor"].Value = dlg.Color.ToArgb();
           tempTable.Invalidate();
         }
       }
@@ -713,6 +759,7 @@ namespace FreelanceManager
 
     private void menuShowStatistics_Click(object sender, EventArgs e)
     {
+      const string seriesTotalName = "Итого";
       if (db == null)
       {
         throw new Exception("fmDB is not assigned!");
@@ -740,10 +787,63 @@ namespace FreelanceManager
           c.Visible = false;
         }
       }
+
+      SQLiteDataAdapter adapterSources = null;
+      DataTable tableSources = db.ExecuteReferenceSources(ref adapterSources);
+
+      SQLiteDataAdapter adapterStatisticsWithSources = null;
+      DataTable tableStatisticsWithSources = db.ExecuteMonthPayedStatisticsWithSources(ref adapterStatisticsWithSources);
+
+      foreach (DataRow r in tableSources.Rows)
+      {
+        frm.chartMonth.Series.Add(r["SourceName"].ToString());
+        frm.chartMonth.Series[r["SourceName"].ToString()].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+        frm.chartMonth.Series[r["SourceName"].ToString()].BorderWidth = 2;
+        object value = r["SourceColor"];
+        if (value == null) return;
+        string str = value.ToString();
+        if (str != "")
+        {
+          frm.chartMonth.Series[r["SourceName"].ToString()].Color = Color.FromArgb(Convert.ToInt32(str));
+        }
+        frm.chartMonth.Legends.Add(r["SourceName"].ToString());
+        frm.chartMonth.Legends[r["SourceName"].ToString()].BorderColor = frm.chartMonth.Series[r["SourceName"].ToString()].Color;
+      }
+
+      frm.chartMonth.Series.Add(seriesTotalName);
+      frm.chartMonth.Series[seriesTotalName].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+      frm.chartMonth.Series[seriesTotalName].BorderWidth = 4;
+
+      frm.chartMonth.Legends.Add(seriesTotalName);
+      frm.chartMonth.Legends[seriesTotalName].BorderColor = frm.chartMonth.Series[seriesTotalName].Color;
+
       foreach (DataRow r in tableStatistics.Rows)
       {
-        frm.chartMonth.Series["seriesMonth"].Points.Add(Convert.ToDouble(r["Summ"].ToString()));
-        frm.chartMonth.Series["seriesMonth"].Points[frm.chartMonth.Series["seriesMonth"].Points.Count - 1].AxisLabel = r["Period"].ToString();
+        frm.chartMonth.Series[seriesTotalName].Points.Add(Convert.ToDouble(r["Summ"].ToString()));
+        frm.chartMonth.Series[seriesTotalName].Points[frm.chartMonth.Series[seriesTotalName].Points.Count - 1].AxisLabel = r["Period"].ToString();
+      }
+
+      foreach (DataRow s in tableSources.Rows)
+      {
+        foreach (DataRow t in tableStatistics.Rows)
+        {
+          object value = null;
+          foreach (DataRow r in tableStatisticsWithSources.Rows)
+          {
+            if (r["SourceName"].ToString() == s["SourceName"].ToString() && r["Period"].ToString() == t["Period"].ToString())
+            {
+              value = r["Summ"];
+            }
+          }
+          if (value == null)
+          {
+            frm.chartMonth.Series[s["SourceName"].ToString()].Points.Add(0.0);
+          }
+          else
+          {
+            frm.chartMonth.Series[s["SourceName"].ToString()].Points.Add(Convert.ToDouble(value.ToString()));
+          }
+        }
       }
       frm.ShowDialog();
     }

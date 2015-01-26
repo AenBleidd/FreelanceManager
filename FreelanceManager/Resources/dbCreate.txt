@@ -4,6 +4,7 @@ create table if not exists "tblSources"
 , [SourceName] varchar(256) not null
 , [isVisible] bit not null default 1
 , [email] varchar(256)
+, [SourceColor] integer not null default -1
 );
 
 create unique index if not exists "tblSources_SourceName_index" on tblSources (SourceName asc);
