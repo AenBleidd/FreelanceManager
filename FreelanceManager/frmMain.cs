@@ -961,6 +961,31 @@ namespace FreelanceManager
       }
     }
 
+    private void menuTblTaskCreateOutFolder_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }   
+      if (properties == null)
+      {
+        throw new Exception("fmProperties is not assigned!");
+      }
+      if (tblTasks.CurrentCell == null)
+        return;
+      int rowindex = tblTasks.CurrentCell.RowIndex;
+      if (rowindex < 0)
+        return;
+      SQLiteDataAdapter adapter = null;
+      string projectName = db.GetSourceNameById(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["SourceName"].Value));
+      string taskName = Convert.ToString(tblTasks.Rows[rowindex].Cells["TaskNumber"].Value);
+      string path = Path.Combine(properties.strFreelanceDirectoryPath, "sources", projectName, taskName);
+      if (!Directory.Exists(path))
+      {
+        Directory.CreateDirectory(path);
+      }
+    }
+
   }
 }
 

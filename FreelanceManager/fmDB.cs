@@ -263,6 +263,25 @@ namespace FreelanceManager
       return ExecuteQuery(ref adapter, select, null, insert, insertParams, update, updateParams, delete, deleteParams);
     }
 
+    public string GetSourceNameById(ref SQLiteDataAdapter adapter, Int32 _idSource)
+    {
+      const string IdSource = "IdSource";
+      const string IdSourceParam = "@" + IdSource;
+      const string SourceName = "SourceName";
+
+      SQLiteParameter pID = new SQLiteParameter();
+      pID.ParameterName = IdSourceParam;
+      pID.DbType = DbType.Int32;
+      pID.Size = 4;
+      pID.Value = _idSource;
+
+      const string select = "select SourceName from tblSources where idSource = @IdSource;";
+      Dictionary<string, SQLiteParameter> selectParams = new Dictionary<string, SQLiteParameter>();
+      selectParams[pID.ParameterName] = pID;
+      DbDataRecord record = ExecuteCommand(ref adapter, select, selectParams);
+      return record[SourceName].ToString();
+    }
+
     public DataTable ExecuteReferenceStatuses(ref SQLiteDataAdapter adapter)
     {
       const string IdStatus = "idStatus";

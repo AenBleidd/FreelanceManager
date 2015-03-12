@@ -42,6 +42,7 @@
       this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
       this.menuMult = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
       this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.menuReferenceSources = new System.Windows.Forms.ToolStripMenuItem();
       this.menuReferenceStatuses = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +56,7 @@
       this.tblTasks = new System.Windows.Forms.DataGridView();
       this.menuTblTasks = new System.Windows.Forms.ContextMenuStrip(this.components);
       this.menuTblTasksMult = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuTblTaskCopy = new System.Windows.Forms.ToolStripMenuItem();
       this.panel3 = new System.Windows.Forms.Panel();
       this.navTasks = new System.Windows.Forms.BindingNavigator(this.components);
       this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
@@ -86,8 +88,9 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-      this.menuCopy = new System.Windows.Forms.ToolStripMenuItem();
-      this.menuTblTaskCopy = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+      this.menuTblTaskCreateOutFolder = new System.Windows.Forms.ToolStripMenuItem();
+      this.menuTblTaskCreateArchiveCopy = new System.Windows.Forms.ToolStripMenuItem();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -200,6 +203,13 @@
       this.menuMult.Text = "Размножить";
       this.menuMult.Click += new System.EventHandler(this.menuMult_Click);
       // 
+      // menuCopy
+      // 
+      this.menuCopy.Name = "menuCopy";
+      this.menuCopy.Size = new System.Drawing.Size(172, 22);
+      this.menuCopy.Text = "Копировать";
+      this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
+      // 
       // справочникиToolStripMenuItem
       // 
       this.справочникиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -298,16 +308,26 @@
       // 
       this.menuTblTasks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuTblTasksMult,
-            this.menuTblTaskCopy});
+            this.menuTblTaskCopy,
+            this.toolStripMenuItem3,
+            this.menuTblTaskCreateOutFolder,
+            this.menuTblTaskCreateArchiveCopy});
       this.menuTblTasks.Name = "menuTblTasks";
-      this.menuTblTasks.Size = new System.Drawing.Size(153, 70);
+      this.menuTblTasks.Size = new System.Drawing.Size(216, 98);
       // 
       // menuTblTasksMult
       // 
       this.menuTblTasksMult.Name = "menuTblTasksMult";
-      this.menuTblTasksMult.Size = new System.Drawing.Size(152, 22);
+      this.menuTblTasksMult.Size = new System.Drawing.Size(215, 22);
       this.menuTblTasksMult.Text = "Размножить";
       this.menuTblTasksMult.Click += new System.EventHandler(this.menuMult_Click);
+      // 
+      // menuTblTaskCopy
+      // 
+      this.menuTblTaskCopy.Name = "menuTblTaskCopy";
+      this.menuTblTaskCopy.Size = new System.Drawing.Size(215, 22);
+      this.menuTblTaskCopy.Text = "Копировать";
+      this.menuTblTaskCopy.Click += new System.EventHandler(this.menuCopy_Click);
       // 
       // panel3
       // 
@@ -613,19 +633,23 @@
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
       // 
-      // menuCopy
+      // toolStripMenuItem3
       // 
-      this.menuCopy.Name = "menuCopy";
-      this.menuCopy.Size = new System.Drawing.Size(172, 22);
-      this.menuCopy.Text = "Копировать";
-      this.menuCopy.Click += new System.EventHandler(this.menuCopy_Click);
+      this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+      this.toolStripMenuItem3.Size = new System.Drawing.Size(212, 6);
       // 
-      // menuTblTaskCopy
+      // menuTblTaskCreateOutFolder
       // 
-      this.menuTblTaskCopy.Name = "menuTblTaskCopy";
-      this.menuTblTaskCopy.Size = new System.Drawing.Size(152, 22);
-      this.menuTblTaskCopy.Text = "Копировать";
-      this.menuTblTaskCopy.Click += new System.EventHandler(this.menuCopy_Click);
+      this.menuTblTaskCreateOutFolder.Name = "menuTblTaskCreateOutFolder";
+      this.menuTblTaskCreateOutFolder.Size = new System.Drawing.Size(215, 22);
+      this.menuTblTaskCreateOutFolder.Text = "Создать папку проекта";
+      this.menuTblTaskCreateOutFolder.Click += new System.EventHandler(this.menuTblTaskCreateOutFolder_Click);
+      // 
+      // menuTblTaskCreateArchiveCopy
+      // 
+      this.menuTblTaskCreateArchiveCopy.Name = "menuTblTaskCreateArchiveCopy";
+      this.menuTblTaskCreateArchiveCopy.Size = new System.Drawing.Size(215, 22);
+      this.menuTblTaskCreateArchiveCopy.Text = "Сделать архивную копию";
       // 
       // frmMain
       // 
@@ -728,6 +752,9 @@
     private System.Windows.Forms.ToolStripMenuItem menuTblTasksMult;
     private System.Windows.Forms.ToolStripMenuItem menuCopy;
     private System.Windows.Forms.ToolStripMenuItem menuTblTaskCopy;
+    private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+    private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateOutFolder;
+    private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateArchiveCopy;
 
   }
 }
