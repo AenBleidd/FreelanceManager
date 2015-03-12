@@ -698,18 +698,24 @@ namespace FreelanceManager
       DataRow row = t.Rows[0];
       string projectName = Convert.ToString(row["SourceName"]);
       string taskName = Convert.ToString(row["TaskNumber"]);
-      string fileName = Convert.ToString(row["LinkName"]);      
-      
-      string path = Path.Combine(properties.strFreelanceDirectoryPath, projectName, taskName, fileName);
+      string fileName = Convert.ToString(row["LinkName"]);
+
       try
       {
-        Process.Start(path);
+        string path = Path.Combine(properties.strFreelanceDirectoryPath, projectName, taskName, fileName);
+        try
+        {
+          Process.Start(path);
+        }
+        catch
+        {
+          MessageBox.Show("Файл не найден");
+        }
       }
-      catch 
+      catch
       {
-        MessageBox.Show("Файл не найден");
+        MessageBox.Show("Невозможно открыть файл", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
-
     }
 
     private void btnOpenLink_Click(object sender, EventArgs e)
