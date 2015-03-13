@@ -992,6 +992,112 @@ namespace FreelanceManager
       }
     }
 
+    private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+    {
+      // Get the subdirectories for the specified directory.
+      DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+      DirectoryInfo[] dirs = dir.GetDirectories();
+
+      if (!dir.Exists)
+      {
+        throw new DirectoryNotFoundException(
+            "Source directory does not exist or could not be found: "
+            + sourceDirName);
+      }
+
+      // If the destination directory doesn't exist, create it. 
+      if (!Directory.Exists(destDirName))
+      {
+        Directory.CreateDirectory(destDirName);
+      }
+
+      // Get the files in the directory and copy them to the new location.
+      FileInfo[] files = dir.GetFiles();
+      foreach (FileInfo file in files)
+      {
+        string temppath = Path.Combine(destDirName, file.Name);
+        file.CopyTo(temppath, false);
+      }
+
+      // If copying subdirectories, copy them and their contents to new location. 
+      if (copySubDirs)
+      {
+        foreach (DirectoryInfo subdir in dirs)
+        {
+          string temppath = Path.Combine(destDirName, subdir.Name);
+          DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+        }
+      }
+    }
+
+    private void menuTblTaskCreateArchiveCopy_Click(object sender, EventArgs e)
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      }
+      if (properties == null)
+      {
+        throw new Exception("fmProperties is not assigned!");
+      }
+      if (tblTasks.CurrentCell == null)
+        return;
+      int rowindex = tblTasks.CurrentCell.RowIndex;
+      if (rowindex < 0)
+        return;
+      SQLiteDataAdapter adapter = null;
+      string projectName = db.GetSourceNameById(ref adapter, Convert.ToInt32(tblTasks.Rows[rowindex].Cells["SourceName"].Value));
+      string taskName = Convert.ToString(tblTasks.Rows[rowindex].Cells["TaskNumber"].Value);
+      string srcPath = Path.Combine(properties.strFreelanceDirectoryPath, "sources", projectName, taskName);
+      string dstPath = Path.Combine(properties.strFreelanceDirectoryPath, "done", taskName);
+      if (!Directory.Exists(srcPath))
+      {
+        return;
+      }
+      string dllpath = properties.str7ZipDirectoryPath + "\\" + "7z.dll";
+      SevenZipCompressor.SetLibraryPath(dllpath);
+
+      Cursor.Current = Cursors.WaitCursor;
+
+      DirectoryCopy(srcPath, dstPath, true);
+
+      SevenZipCompressor szc = new SevenZipCompressor
+      {
+        CompressionMethod = CompressionMethod.Deflate,
+        CompressionLevel = CompressionLevel.Normal,
+        CompressionMode = CompressionMode.Create,
+        DirectoryStructure = true,
+        PreserveDirectoryRoot = false,
+        ArchiveFormat = OutArchiveFormat.Zip
+      };
+
+      string archname = Path.Combine(properties.strFreelanceDirectoryPath, "done") + "\\" + taskName + ".zip";
+      int num = 0;
+      while(true)
+      {
+        if (!File.Exists(archname))
+        {
+          break;
+        }
+        archname = Path.Combine(properties.strFreelanceDirectoryPath, "done") + "\\" + taskName + "." + num.ToString("D4") + ".zip";
+        if (!File.Exists(archname))
+        {
+          break;
+        }
+        num++;
+      }
+
+      Dictionary<string, string> filesDictionary = new Dictionary<string, string>();
+      AddFilesFromDirectoryToDictionary(filesDictionary, dstPath);
+
+      FileStream fs = new FileStream(archname, FileMode.Create);
+      szc.CompressFileDictionary(filesDictionary, fs);
+      fs.Close();
+
+      Cursor.Current = Cursors.Default;
+
+      MessageBox.Show("Готово", "Создание архивной копии", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
   }
 }
 
