@@ -1064,7 +1064,7 @@ namespace FreelanceManager
       SevenZipCompressor szc = new SevenZipCompressor
       {
         CompressionMethod = CompressionMethod.Deflate,
-        CompressionLevel = CompressionLevel.Normal,
+        CompressionLevel = CompressionLevel.Ultra,
         CompressionMode = CompressionMode.Create,
         DirectoryStructure = true,
         PreserveDirectoryRoot = false,
@@ -1100,15 +1100,3 @@ namespace FreelanceManager
     }
   }
 }
-
-/*
- SevenZipCompressor szc = new SevenZipCompressor
-          {
-            CompressionMethod = CompressionMethod.Deflate,
-            CompressionLevel = CompressionLevel.Normal,
-            CompressionMode = CompressionMode.Create,                                      
-            DirectoryStructure = true,
-            PreserveDirectoryRoot = false,
-            ArchiveFormat = OutArchiveFormat.Zip
-          };  
- */
