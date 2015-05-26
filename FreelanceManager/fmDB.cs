@@ -704,6 +704,12 @@ namespace FreelanceManager
       return ExecuteQuery(ref adapter, query);
     }
 
+    public DataTable ExecuteGetMonthsToArchive(ref SQLiteDataAdapter adapter)
+    {
+      const string query = "select case when TaskDeadlineDate is null then printf('%s.%s', strftime('%m', TaskReceiveDate), strftime('%Y', TaskReceiveDate)) else printf('%s.%s', strftime('%m', TaskDeadlineDate), strftime('%Y', TaskDeadlineDate)) end as [TaskDate], case when TaskDeadlineDate is null then printf('%s%s', strftime('%Y', TaskReceiveDate), strftime('%m', TaskReceiveDate)) else printf('%s%s', strftime('%Y', TaskDeadlineDate), strftime('%m', TaskDeadlineDate)) end as [DateTask] from tblTasks where idStatus in (2, 3, 4) and isArchived = 0 and case when TaskDeadlineDate is null then TaskReceiveDate else TaskDeadlineDate end < date('now','start of month','-1 month') group by TaskDate;";
+      return ExecuteQuery(ref adapter, query);
+    }
+
     public DataTable ExecuteGetTasksToArchive(ref SQLiteDataAdapter adapter, string _Date)
     {
       const string Date = "strDate";
