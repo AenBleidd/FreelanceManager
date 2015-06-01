@@ -467,7 +467,21 @@ namespace FreelanceManager
         }
         tblTasks.DataBindings.Add(new Binding("text", tableTasks, ((System.Data.DataColumn)enumerator.Current).ColumnName));
       }
+      ShowTotalUnpaid();
+    }
 
+    private void ShowTotalUnpaid()
+    {
+      if (db == null)
+      {
+        throw new Exception("fmDB is not assigned!");
+      } 
+
+      SQLiteDataAdapter adapter = null;
+
+      string tu = db.GetTotalUnpaid(ref adapter);
+
+      lblTotalUnpaid.Text = "К оплате: " + tu + " р.";
     }
 
     private void ShowLinks(object idTask)

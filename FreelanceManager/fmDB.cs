@@ -279,7 +279,19 @@ namespace FreelanceManager
       Dictionary<string, SQLiteParameter> selectParams = new Dictionary<string, SQLiteParameter>();
       selectParams[pID.ParameterName] = pID;
       DbDataRecord record = ExecuteCommand(ref adapter, select, selectParams);
-      return record[SourceName].ToString();
+      if (record != null)
+        return record[SourceName].ToString();
+      return String.Empty;
+    }
+
+    public string GetTotalUnpaid(ref SQLiteDataAdapter adapter)
+    {
+      const string TotalUnpaid = "TotalUnpaid";
+      const string query = "select sum(Cost) as [TotalUnpaid] from tblTasks where idStatus = 7;";
+      DbDataRecord record = ExecuteCommand(ref adapter, query);
+      if (record != null)
+        return record[TotalUnpaid].ToString();
+      return String.Empty;
     }
 
     public DataTable ExecuteReferenceStatuses(ref SQLiteDataAdapter adapter)
@@ -662,8 +674,8 @@ namespace FreelanceManager
       getSubtaskCountQueryParams[pidTask.ParameterName] = pidTask;
 
       DbDataRecord getSubtaskCountRecord = ExecuteCommand(ref adapter, getSubtaskCountQuery, getSubtaskCountQueryParams);
-      int _SubtaskCount = Convert.ToInt32(getSubtaskCountRecord[SubtaskCount].ToString());
-      int _SubtaskNumber = Convert.ToInt32(getSubtaskCountRecord[SubtaskNumber].ToString());
+      int _SubtaskCount = getSubtaskCountRecord != null ? Convert.ToInt32(getSubtaskCountRecord[SubtaskCount].ToString()) : 0;
+      int _SubtaskNumber = getSubtaskCountRecord != null ? Convert.ToInt32(getSubtaskCountRecord[SubtaskNumber].ToString()) : 0;
       const string CopyRecord = "insert into tblTasks (idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, SubtaskNumber, TaskReceiveDate, TaskDeadlineDate, FirstDoneVersionDate, Cost, idStatus, Remark) select idSource, TaskNumber, TaskName, idLanguage, SubtaskCount, @SubtaskNumber, TaskReceiveDate, TaskDeadlineDate, FirstDoneVersionDate, Cost, idStatus, Remark from tblTasks where idTask = @idTask;";
       Dictionary<string, SQLiteParameter> CopyRecordQueryParams = new Dictionary<string, SQLiteParameter>();
       CopyRecordQueryParams[pidTask.ParameterName] = pidTask;
@@ -685,7 +697,7 @@ namespace FreelanceManager
         CopyRecordQueryParams[pSubtaskNumber.ParameterName] = pSubtaskNumber;
         ExecuteNonQuery(CopyRecord, CopyRecordQueryParams);
         DbDataRecord getLastInsertIDRecord = ExecuteCommand(ref adapter, getLastInsertIDQuery);
-        pNewTask.Value = Convert.ToInt32(getLastInsertIDRecord[0].ToString());
+        pNewTask.Value = getLastInsertIDRecord != null ? Convert.ToInt32(getLastInsertIDRecord[0].ToString()) : 1;
         CopyRecordLinksParams[pNewTask.ParameterName] = pNewTask;
         CopyRecordLinksParams[pidTask.ParameterName] = pidTask;
         ExecuteNonQuery(CopyRecordLinks, CopyRecordLinksParams);
@@ -766,7 +778,7 @@ namespace FreelanceManager
 
       ExecuteNonQuery(copyTaskQuery, copyTaskQueryParams);
       DbDataRecord getLastInsertIDRecord = ExecuteCommand(ref adapter, getLastInsertIDQuery);
-      pNewTask.Value = Convert.ToInt32(getLastInsertIDRecord[0].ToString());
+      pNewTask.Value = getLastInsertIDRecord == null ? Convert.ToInt32(getLastInsertIDRecord[0].ToString()) : 1;
       CopyRecordLinksParams[pNewTask.ParameterName] = pNewTask;
       CopyRecordLinksParams[pidTask.ParameterName] = pidTask;
       ExecuteNonQuery(CopyRecordLinks, CopyRecordLinksParams);

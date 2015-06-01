@@ -91,6 +91,7 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+      this.lblTotalUnpaid = new System.Windows.Forms.Label();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -313,7 +314,7 @@
             this.menuTblTaskCreateOutFolder,
             this.menuTblTaskCreateArchiveCopy});
       this.menuTblTasks.Name = "menuTblTasks";
-      this.menuTblTasks.Size = new System.Drawing.Size(216, 120);
+      this.menuTblTasks.Size = new System.Drawing.Size(216, 98);
       // 
       // menuTblTasksMult
       // 
@@ -350,6 +351,7 @@
       // 
       // panel3
       // 
+      this.panel3.Controls.Add(this.lblTotalUnpaid);
       this.panel3.Controls.Add(this.navTasks);
       this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
       this.panel3.Location = new System.Drawing.Point(0, 442);
@@ -652,6 +654,16 @@
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
       // 
+      // lblTotalUnpaid
+      // 
+      this.lblTotalUnpaid.Dock = System.Windows.Forms.DockStyle.Right;
+      this.lblTotalUnpaid.Location = new System.Drawing.Point(267, 0);
+      this.lblTotalUnpaid.Name = "lblTotalUnpaid";
+      this.lblTotalUnpaid.Size = new System.Drawing.Size(188, 28);
+      this.lblTotalUnpaid.TabIndex = 1;
+      this.lblTotalUnpaid.Text = "label1";
+      this.lblTotalUnpaid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+      // 
       // frmMain
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -756,6 +768,7 @@
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
     private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateOutFolder;
     private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateArchiveCopy;
+    private System.Windows.Forms.Label lblTotalUnpaid;
 
   }
 }
