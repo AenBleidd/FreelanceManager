@@ -61,6 +61,7 @@
       this.menuTblTaskCreateOutFolder = new System.Windows.Forms.ToolStripMenuItem();
       this.menuTblTaskCreateArchiveCopy = new System.Windows.Forms.ToolStripMenuItem();
       this.panel3 = new System.Windows.Forms.Panel();
+      this.lblTotalUnpaid = new System.Windows.Forms.Label();
       this.navTasks = new System.Windows.Forms.BindingNavigator(this.components);
       this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -91,7 +92,6 @@
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-      this.lblTotalUnpaid = new System.Windows.Forms.Label();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -224,21 +224,21 @@
       // menuReferenceSources
       // 
       this.menuReferenceSources.Name = "menuReferenceSources";
-      this.menuReferenceSources.Size = new System.Drawing.Size(135, 22);
+      this.menuReferenceSources.Size = new System.Drawing.Size(152, 22);
       this.menuReferenceSources.Text = "Источники";
       this.menuReferenceSources.Click += new System.EventHandler(this.menuReferenceSources_Click);
       // 
       // menuReferenceStatuses
       // 
       this.menuReferenceStatuses.Name = "menuReferenceStatuses";
-      this.menuReferenceStatuses.Size = new System.Drawing.Size(135, 22);
+      this.menuReferenceStatuses.Size = new System.Drawing.Size(152, 22);
       this.menuReferenceStatuses.Text = "Статусы";
       this.menuReferenceStatuses.Click += new System.EventHandler(this.menuReferenceStatuses_Click);
       // 
       // menuReferenceLanguages
       // 
       this.menuReferenceLanguages.Name = "menuReferenceLanguages";
-      this.menuReferenceLanguages.Size = new System.Drawing.Size(135, 22);
+      this.menuReferenceLanguages.Size = new System.Drawing.Size(152, 22);
       this.menuReferenceLanguages.Text = "Языки";
       this.menuReferenceLanguages.Click += new System.EventHandler(this.menuReferenceLanguages_Click);
       // 
@@ -358,6 +358,16 @@
       this.panel3.Name = "panel3";
       this.panel3.Size = new System.Drawing.Size(455, 28);
       this.panel3.TabIndex = 0;
+      // 
+      // lblTotalUnpaid
+      // 
+      this.lblTotalUnpaid.Dock = System.Windows.Forms.DockStyle.Right;
+      this.lblTotalUnpaid.Location = new System.Drawing.Point(267, 0);
+      this.lblTotalUnpaid.Name = "lblTotalUnpaid";
+      this.lblTotalUnpaid.Size = new System.Drawing.Size(188, 28);
+      this.lblTotalUnpaid.TabIndex = 1;
+      this.lblTotalUnpaid.Text = "label1";
+      this.lblTotalUnpaid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       // 
       // navTasks
       // 
@@ -653,16 +663,6 @@
       // 
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
-      // 
-      // lblTotalUnpaid
-      // 
-      this.lblTotalUnpaid.Dock = System.Windows.Forms.DockStyle.Right;
-      this.lblTotalUnpaid.Location = new System.Drawing.Point(267, 0);
-      this.lblTotalUnpaid.Name = "lblTotalUnpaid";
-      this.lblTotalUnpaid.Size = new System.Drawing.Size(188, 28);
-      this.lblTotalUnpaid.TabIndex = 1;
-      this.lblTotalUnpaid.Text = "label1";
-      this.lblTotalUnpaid.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       // 
       // frmMain
       // 

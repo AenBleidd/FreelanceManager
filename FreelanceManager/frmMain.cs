@@ -306,6 +306,7 @@ namespace FreelanceManager
       if (frm.ShowDialog() == DialogResult.OK)
       {
         adapter.Update(table);
+        ShowTasks();
       }
       frm.Dispose();
     }
