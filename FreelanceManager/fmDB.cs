@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // SQLite
@@ -108,10 +106,8 @@ namespace FreelanceManager
           }
         }
         SQLiteDataReader reader = command.ExecuteReader();
-        foreach (DbDataRecord r in reader)
-        {
-          return r;
-        }
+        if (reader.HasRows)
+          return reader.Cast<DbDataRecord>().First();        
         return null;
       }
       catch (Exception err)

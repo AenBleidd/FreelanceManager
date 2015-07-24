@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // SQLite
@@ -664,8 +660,11 @@ namespace FreelanceManager
         int colindex = tblTasks.CurrentCell.ColumnIndex;
         SaveTasks();
         ShowTasks();
-        DataGridViewCell selected = tblTasks.Rows[rowindex].Cells[colindex];
-        tblTasks.CurrentCell = selected;
+        if (rowindex >= 0 && colindex >= 0)
+        {
+          DataGridViewCell selected = tblTasks.Rows[rowindex].Cells[colindex];
+          tblTasks.CurrentCell = selected;
+        }
         tblTasks_SelectionChanged(sender, e);
       }
       else if (tblLinks.Focused)
@@ -674,8 +673,11 @@ namespace FreelanceManager
         int colindex = tblLinks.CurrentCell.ColumnIndex;
         SaveLinks();
         tblTasks_SelectionChanged(sender, e);
-        DataGridViewCell selected = tblLinks.Rows[rowindex].Cells[colindex];
-        tblLinks.CurrentCell = selected;
+        if (rowindex >= 0 && colindex >= 0)
+        {
+          DataGridViewCell selected = tblLinks.Rows[rowindex].Cells[colindex];
+          tblLinks.CurrentCell = selected;
+        }
       }
     }
 
