@@ -26,7 +26,7 @@ namespace FreelanceManager.Database
       }
       catch (Exception ex)
       {
-        MessageBox.Show("Не установлен System.Data.SQLite (1.0.94.0)" + Environment.NewLine + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        MessageBox.Show("Не установлен System.Data.SQLite (1.0.98.0)" + Environment.NewLine + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
         Application.Exit();
       }
     }
