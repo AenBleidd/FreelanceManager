@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 
 using FreelanceManager.Database;
+using FreelanceManager.GoogleHelper;
 
 namespace FreelanceManager
 {

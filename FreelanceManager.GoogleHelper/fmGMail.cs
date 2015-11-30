@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // Google API
-using Google;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
@@ -16,9 +10,9 @@ using Google.Apis.Services;
 
 using GMailMessage = Google.Apis.Gmail.v1.Data.Message;
 
-namespace FreelanceManager
+namespace FreelanceManager.GoogleHelper
 {
-  class fmGMail
+  public class fmGMail
   {
     fmGoogle google = null;
     GmailService service = null;

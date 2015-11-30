@@ -1,26 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // Google API
-using Google;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v2;
-using Google.Apis.Drive.v2.Data;
 using Google.Apis.Gmail.v1;
-using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 
-namespace FreelanceManager
+namespace FreelanceManager.GoogleHelper
 {
-  class fmGoogle
+  public class fmGoogle
   {
     UserCredential credential = null;
     Userinfoplus userInfo = null;
@@ -71,7 +63,7 @@ namespace FreelanceManager
         new BaseClientService.Initializer()
         {
           HttpClientInitializer = credential,
-          ApplicationName = Program.getProgramName(),
+          ApplicationName = AppDomain.CurrentDomain.FriendlyName,
         });
       userInfo = service.Userinfo.Get().Execute();
     }

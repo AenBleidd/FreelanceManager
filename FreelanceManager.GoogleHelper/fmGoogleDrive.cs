@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 // Google API
-using Google;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v2;
-using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 
-namespace FreelanceManager
+namespace FreelanceManager.GoogleHelper
 {
-  class fmGoogleDrive
+  public class fmGoogleDrive
   {
     fmGoogle google = null;
     DriveService service = null;
