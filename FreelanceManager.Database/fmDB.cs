@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,18 +19,30 @@ namespace FreelanceManager.Database
     SQLiteFactory factory = null;
     SQLiteConnection connection = null;
     const string DBName = "FreelanceManager.db";
-    public fmDB()
+    bool bSilent = false;
+    string source = AppDomain.CurrentDomain.FriendlyName;
+    public fmDB(bool _bSilent = false)
     {
+      bSilent = _bSilent;
+      if (bSilent)
+      {
+        if (!EventLog.SourceExists(source))
+          EventLog.CreateEventSource(source, "Application");
+      }
       try
       {
         factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
       }
       catch (Exception ex)
       {
-        MessageBox.Show("Не установлен System.Data.SQLite (1.0.98.0)" + Environment.NewLine + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        if (!bSilent)
+          MessageBox.Show("Не установлен System.Data.SQLite (1.0.98.0)" + Environment.NewLine + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        else
+          EventLog.WriteEntry(source, "Не установлен System.Data.SQLite(1.0.98.0)", EventLogEntryType.Error);
         Application.Exit();
       }
     }
+
     public void setProperties(fmProperties _properties)
     {
       properties = _properties;
@@ -37,14 +50,25 @@ namespace FreelanceManager.Database
 
     public bool Connect()
     {
+      if (bSilent)
+      {
+        if (!EventLog.SourceExists(source))
+          EventLog.CreateEventSource(source, "Application");
+      }
       if (connection != null)
         CloseConnection();
       if (properties == null)
       {
-        throw new Exception("fmProperties is not assigned to fmDB!");
+        if (!bSilent)
+          throw new Exception("fmProperties is not assigned to fmDB!");
+        else
+        {
+          EventLog.WriteEntry(source, "fmProperties is not assigned to fmDB!", EventLogEntryType.Error);
+          return false;
+        }
       }
       connection = (SQLiteConnection)factory.CreateConnection();
-      connection.ConnectionString = "Data Source = " + properties.strDBPath + "\\"+ DBName;
+      connection.ConnectionString = "Data Source = " + properties.strDBPath + "\\" + DBName;
       try
       {
         connection.Open();
@@ -52,7 +76,10 @@ namespace FreelanceManager.Database
       }
       catch (Exception err)
       {
-        MessageBox.Show(err.Message);
+        if (!bSilent)
+          MessageBox.Show(err.Message);
+        else
+          EventLog.WriteEntry(source, err.Message, EventLogEntryType.Error);
         return false;
       }
     }
@@ -86,7 +113,10 @@ namespace FreelanceManager.Database
       }
       catch (Exception err)
       {
-        MessageBox.Show(err.Message);
+        if (!bSilent)
+          MessageBox.Show(err.Message);
+        else
+          EventLog.WriteEntry(source, err.Message, EventLogEntryType.Error);
         return false;
       }
     }
@@ -109,12 +139,15 @@ namespace FreelanceManager.Database
         }
         SQLiteDataReader reader = command.ExecuteReader();
         if (reader.HasRows)
-          return reader.Cast<DbDataRecord>().First();        
+          return reader.Cast<DbDataRecord>().First();
         return null;
       }
       catch (Exception err)
       {
-        MessageBox.Show(err.Message);
+        if (!bSilent)
+          MessageBox.Show(err.Message);
+        else
+          EventLog.WriteEntry(source, err.Message, EventLogEntryType.Error);
         return null;
       }
     }
@@ -190,7 +223,10 @@ namespace FreelanceManager.Database
       }
       catch (Exception err)
       {
-        MessageBox.Show(err.Message);
+        if (!bSilent)
+          MessageBox.Show(err.Message);
+        else
+          EventLog.WriteEntry(source, err.Message, EventLogEntryType.Error);
         return null;
       }
     }
@@ -585,7 +621,7 @@ namespace FreelanceManager.Database
       insertParams[pLinkName.ParameterName] = pLinkName;
 
       const string update = "update tblTasksLinks set idTask = @idTask, Link = @Link, LinkName = @LinkName where idLink = @idLink;";
-      Dictionary<string, SQLiteParameter> updateParams = new Dictionary<string,SQLiteParameter>();
+      Dictionary<string, SQLiteParameter> updateParams = new Dictionary<string, SQLiteParameter>();
       updateParams[pidLink.ParameterName] = pidLink;
       updateParams[pIdTask.ParameterName] = pIdTask;
       updateParams[pLink.ParameterName] = pLink;
@@ -688,7 +724,7 @@ namespace FreelanceManager.Database
       pNewTask.Size = 4;
       Dictionary<string, SQLiteParameter> CopyRecordLinksParams = new Dictionary<string, SQLiteParameter>();
       const string getLastInsertIDQuery = "select last_insert_rowid();";
-      
+
       for (int i = _SubtaskNumber + 1; i <= _SubtaskCount; i++)
       {
         pSubtaskNumber.Value = i;
