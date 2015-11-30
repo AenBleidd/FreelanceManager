@@ -1,4 +1,4 @@
-﻿namespace FreelanceManager
+﻿namespace FreelanceManager.Properties
 {
   partial class frmProperties
   {

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 // SQLite
 using System.Data.SQLite;
 
+using FreelanceManager.Database;
+
 namespace FreelanceManager
 {
   public partial class frmBill : Form

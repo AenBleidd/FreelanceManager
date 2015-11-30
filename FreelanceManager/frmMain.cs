@@ -13,6 +13,9 @@ using System.Data.SQLite;
 // CSharp
 using SevenZip;
 
+using FreelanceManager.Database;
+using FreelanceManager.Properties;
+
 namespace FreelanceManager
 {
   public partial class frmMain : Form

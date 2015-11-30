@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FreelanceManager
+namespace FreelanceManager.Properties
 {
   public partial class frmProperties : Form
   {

@@ -4,7 +4,7 @@
 using Microsoft.Win32;
 
 
-namespace FreelanceManager
+namespace FreelanceManager.Properties
 {
   public class fmProperties
   {

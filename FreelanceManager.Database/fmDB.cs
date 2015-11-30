@@ -8,7 +8,9 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 
-namespace FreelanceManager
+using FreelanceManager.Properties;
+
+namespace FreelanceManager.Database
 {
   public class fmDB
   {

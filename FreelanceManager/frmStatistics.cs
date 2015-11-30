@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-// SQLite
+using FreelanceManager.Database;
 
 namespace FreelanceManager
 {
