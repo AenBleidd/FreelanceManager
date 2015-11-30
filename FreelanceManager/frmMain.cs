@@ -4,7 +4,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 // SQLite
@@ -15,6 +14,7 @@ using SevenZip;
 
 using FreelanceManager.Database;
 using FreelanceManager.Properties;
+using FreelanceManager.Utilities;
 
 namespace FreelanceManager
 {
@@ -872,111 +872,11 @@ namespace FreelanceManager
         }
       }
       frm.ShowDialog();
-    }
-
-    private static void AddFilesFromDirectoryToDictionary(Dictionary<string, string> filesDictionary, string pathToDirectory)
-    {
-      DirectoryInfo dirInfo = new DirectoryInfo(pathToDirectory);
-
-      FileInfo[] fileInfos = dirInfo.GetFiles("*.*", SearchOption.AllDirectories);
-
-      foreach (FileInfo fi in fileInfos)
-      {
-        filesDictionary.Add(fi.FullName.Replace(dirInfo.Parent.FullName + "\\", ""), fi.FullName);
-      }
-    }
+    }    
 
     private void menuArchive_Click(object sender, EventArgs e)
     {
-      if (db == null)
-      {
-        throw new Exception("fmDB is not assigned!");
-      }
-      if (properties == null)
-      {
-        throw new Exception("fmProperties is not assigned!");
-      }
-      string dllpath = properties.str7ZipDirectoryPath + "\\" + "7z.dll";
-      SevenZipCompressor.SetLibraryPath(dllpath);
-      SQLiteDataAdapter adapter = null;
-      DataTable tableMonths = db.ExecuteGetMonthsToArchive(ref adapter);
-      if (tableMonths.Rows.Count == 0)
-      {
-        MessageBox.Show("Нет данных для архивации", "Данные архивированы", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        return;
-      }
-      foreach (DataRow m in tableMonths.Rows)
-      {
-        string date = m["TaskDate"].ToString();
-        DataTable tableTasks = db.ExecuteGetTasksToArchive(ref adapter, date);
-        if (tableTasks.Rows.Count == 0)
-        {
-          MessageBox.Show("Нет данных для архивации", "Данные архивированы", MessageBoxButtons.OK, MessageBoxIcon.Information);
-          return;
-        }
-        string[] dirs = null;
-        string[] files = null;
-        string path = properties.strFreelanceDirectoryPath + "\\" + "done";
-        foreach (DataRow r in tableTasks.Rows)
-        {
-          string TaskNumber = r["TaskNumber"].ToString();
-          string[] finded = Directory.GetDirectories(path, TaskNumber + "*");
-          if (dirs == null)
-            dirs = finded;
-          else
-            dirs = dirs.Concat(finded).ToArray();
-          finded = Directory.GetFiles(path, TaskNumber + "*.zip");
-          if (files == null)
-            files = finded;
-          else
-            files = files.Concat(finded).ToArray();
-        }
-        if (files.Count() == 0)
-        {
-          continue;
-        }
-        SevenZipCompressor szc = new SevenZipCompressor
-        {
-          CompressionMethod = CompressionMethod.Lzma2,
-          CompressionLevel = CompressionLevel.Ultra,
-          CompressionMode = CompressionMode.Create,
-          DirectoryStructure = true,
-          PreserveDirectoryRoot = false,
-          ArchiveFormat = OutArchiveFormat.SevenZip
-        };
-        string archname = path + "\\" + "done.arch." + m["DateTask"].ToString() + ".7z";
-
-        Dictionary<string, string> filesDictionary = new Dictionary<string, string>();
-        foreach (string d in dirs)
-          AddFilesFromDirectoryToDictionary(filesDictionary, d);
-
-        Cursor.Current = Cursors.WaitCursor;
-
-        FileStream fs = new FileStream(archname, FileMode.Create);
-        szc.CompressFileDictionary(filesDictionary, fs);
-        fs.Close();
-
-        archname = path + "\\" + "done.arch.zip." + m["DateTask"].ToString() + ".7z";
-        fs = new FileStream(archname, FileMode.Create);
-        szc.CompressFiles(fs, files);
-        fs.Close();
-
-        foreach (string s in dirs)
-        {
-          Directory.Delete(s, true);
-        }
-
-        foreach (string f in files)
-        {
-          File.Delete(f);
-        }
-
-        db.ExecuteSetArchivedTasks(ref adapter, date);
-      }
-
-      Cursor.Current = Cursors.Default;
-
-      MessageBox.Show("Готово", "Архивация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      fmUtilities.Archive(db, properties, false);
     }
 
     private void menuCopy_Click(object sender, EventArgs e)
@@ -1119,7 +1019,7 @@ namespace FreelanceManager
       }
 
       Dictionary<string, string> filesDictionary = new Dictionary<string, string>();
-      AddFilesFromDirectoryToDictionary(filesDictionary, dstPath);
+      fmUtilities.AddFilesFromDirectoryToDictionary(filesDictionary, dstPath);
 
       FileStream fs = new FileStream(archname, FileMode.Create);
       szc.CompressFileDictionary(filesDictionary, fs);

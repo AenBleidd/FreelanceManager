@@ -273,6 +273,10 @@
       <Project>{33e2bc8c-f264-4d70-8709-897e1c8a178e}</Project>
       <Name>FreelanceManager.Properties</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FreelanceManager.Utilities\FreelanceManager.Utilities.csproj">
+      <Project>{e7e29ea9-c8c5-45f4-ad95-c7549fa7ffff}</Project>
+      <Name>FreelanceManager.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
