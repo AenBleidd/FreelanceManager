@@ -115,7 +115,7 @@ namespace FreelanceManager.Utilities
 
         var fs = new FileStream(archname, FileMode.Create);
         szc.CompressFileDictionary(filesDictionary, fs);
-        fs.Close();
+          fs.Close();
 
         archname = path + "\\" + "done.arch.zip." + m["DateTask"].ToString() + ".7z";
         fs = new FileStream(archname, FileMode.Create);
