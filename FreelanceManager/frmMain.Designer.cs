@@ -75,23 +75,25 @@
       this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.panel4 = new System.Windows.Forms.Panel();
-      this.tblLinks = new System.Windows.Forms.DataGridView();
-      this.panel6 = new System.Windows.Forms.Panel();
-      this.btnOpenFile = new System.Windows.Forms.Button();
       this.btnOpenLink = new System.Windows.Forms.Button();
-      this.panel5 = new System.Windows.Forms.Panel();
+      this.btnOpenFile = new System.Windows.Forms.Button();
+      this.panel6 = new System.Windows.Forms.Panel();
       this.navLinks = new System.Windows.Forms.BindingNavigator(this.components);
-      this.bindingNavigatorAddNewItem1 = new System.Windows.Forms.ToolStripButton();
-      this.bindingNavigatorCountItem1 = new System.Windows.Forms.ToolStripLabel();
-      this.bindingNavigatorDeleteItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveFirstItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMovePreviousItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator3 = new System.Windows.Forms.ToolStripSeparator();
       this.bindingNavigatorPositionItem1 = new System.Windows.Forms.ToolStripTextBox();
+      this.bindingNavigatorCountItem1 = new System.Windows.Forms.ToolStripLabel();
       this.bindingNavigatorSeparator4 = new System.Windows.Forms.ToolStripSeparator();
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+      this.bindingNavigatorAddNewItem1 = new System.Windows.Forms.ToolStripButton();
+      this.bindingNavigatorDeleteItem1 = new System.Windows.Forms.ToolStripButton();
+      this.panel5 = new System.Windows.Forms.Panel();
+      this.tblLinks = new System.Windows.Forms.DataGridView();
+      this.splitter2 = new System.Windows.Forms.Splitter();
+      this.edtComments = new System.Windows.Forms.TextBox();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -102,11 +104,11 @@
       ((System.ComponentModel.ISupportInitialize)(this.navTasks)).BeginInit();
       this.navTasks.SuspendLayout();
       this.panel4.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).BeginInit();
       this.panel6.SuspendLayout();
-      this.panel5.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navLinks)).BeginInit();
       this.navLinks.SuspendLayout();
+      this.panel5.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).BeginInit();
       this.SuspendLayout();
       // 
       // menuStrip1
@@ -224,21 +226,21 @@
       // menuReferenceSources
       // 
       this.menuReferenceSources.Name = "menuReferenceSources";
-      this.menuReferenceSources.Size = new System.Drawing.Size(152, 22);
+      this.menuReferenceSources.Size = new System.Drawing.Size(135, 22);
       this.menuReferenceSources.Text = "Источники";
       this.menuReferenceSources.Click += new System.EventHandler(this.menuReferenceSources_Click);
       // 
       // menuReferenceStatuses
       // 
       this.menuReferenceStatuses.Name = "menuReferenceStatuses";
-      this.menuReferenceStatuses.Size = new System.Drawing.Size(152, 22);
+      this.menuReferenceStatuses.Size = new System.Drawing.Size(135, 22);
       this.menuReferenceStatuses.Text = "Статусы";
       this.menuReferenceStatuses.Click += new System.EventHandler(this.menuReferenceStatuses_Click);
       // 
       // menuReferenceLanguages
       // 
       this.menuReferenceLanguages.Name = "menuReferenceLanguages";
-      this.menuReferenceLanguages.Size = new System.Drawing.Size(152, 22);
+      this.menuReferenceLanguages.Size = new System.Drawing.Size(135, 22);
       this.menuReferenceLanguages.Text = "Языки";
       this.menuReferenceLanguages.Click += new System.EventHandler(this.menuReferenceLanguages_Click);
       // 
@@ -486,6 +488,8 @@
       // 
       // panel4
       // 
+      this.panel4.Controls.Add(this.edtComments);
+      this.panel4.Controls.Add(this.splitter2);
       this.panel4.Controls.Add(this.tblLinks);
       this.panel4.Controls.Add(this.panel6);
       this.panel4.Controls.Add(this.panel5);
@@ -494,40 +498,6 @@
       this.panel4.Name = "panel4";
       this.panel4.Size = new System.Drawing.Size(258, 470);
       this.panel4.TabIndex = 4;
-      // 
-      // tblLinks
-      // 
-      this.tblLinks.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-      this.tblLinks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.tblLinks.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.tblLinks.Location = new System.Drawing.Point(0, 0);
-      this.tblLinks.MultiSelect = false;
-      this.tblLinks.Name = "tblLinks";
-      this.tblLinks.Size = new System.Drawing.Size(258, 419);
-      this.tblLinks.TabIndex = 1;
-      this.tblLinks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_CellDoubleClick);
-      this.tblLinks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_RowLeave);
-      // 
-      // panel6
-      // 
-      this.panel6.Controls.Add(this.btnOpenFile);
-      this.panel6.Controls.Add(this.btnOpenLink);
-      this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel6.Location = new System.Drawing.Point(0, 419);
-      this.panel6.Name = "panel6";
-      this.panel6.Size = new System.Drawing.Size(258, 23);
-      this.panel6.TabIndex = 2;
-      // 
-      // btnOpenFile
-      // 
-      this.btnOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.btnOpenFile.Location = new System.Drawing.Point(111, 0);
-      this.btnOpenFile.Name = "btnOpenFile";
-      this.btnOpenFile.Size = new System.Drawing.Size(105, 23);
-      this.btnOpenFile.TabIndex = 1;
-      this.btnOpenFile.Text = "Открыть файл";
-      this.btnOpenFile.UseVisualStyleBackColor = true;
-      this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
       // 
       // btnOpenLink
       // 
@@ -540,14 +510,26 @@
       this.btnOpenLink.UseVisualStyleBackColor = true;
       this.btnOpenLink.Click += new System.EventHandler(this.btnOpenLink_Click);
       // 
-      // panel5
+      // btnOpenFile
       // 
-      this.panel5.Controls.Add(this.navLinks);
-      this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel5.Location = new System.Drawing.Point(0, 442);
-      this.panel5.Name = "panel5";
-      this.panel5.Size = new System.Drawing.Size(258, 28);
-      this.panel5.TabIndex = 0;
+      this.btnOpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.btnOpenFile.Location = new System.Drawing.Point(111, 0);
+      this.btnOpenFile.Name = "btnOpenFile";
+      this.btnOpenFile.Size = new System.Drawing.Size(105, 23);
+      this.btnOpenFile.TabIndex = 1;
+      this.btnOpenFile.Text = "Открыть файл";
+      this.btnOpenFile.UseVisualStyleBackColor = true;
+      this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
+      // 
+      // panel6
+      // 
+      this.panel6.Controls.Add(this.btnOpenFile);
+      this.panel6.Controls.Add(this.btnOpenLink);
+      this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.panel6.Location = new System.Drawing.Point(0, 419);
+      this.panel6.Name = "panel6";
+      this.panel6.Size = new System.Drawing.Size(258, 23);
+      this.panel6.TabIndex = 2;
       // 
       // navLinks
       // 
@@ -578,31 +560,6 @@
       this.navLinks.Size = new System.Drawing.Size(255, 25);
       this.navLinks.TabIndex = 0;
       this.navLinks.Text = "bindingNavigator1";
-      // 
-      // bindingNavigatorAddNewItem1
-      // 
-      this.bindingNavigatorAddNewItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.bindingNavigatorAddNewItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem1.Image")));
-      this.bindingNavigatorAddNewItem1.Name = "bindingNavigatorAddNewItem1";
-      this.bindingNavigatorAddNewItem1.RightToLeftAutoMirrorImage = true;
-      this.bindingNavigatorAddNewItem1.Size = new System.Drawing.Size(23, 22);
-      this.bindingNavigatorAddNewItem1.Text = "Add new";
-      // 
-      // bindingNavigatorCountItem1
-      // 
-      this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
-      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
-      this.bindingNavigatorCountItem1.Text = "of {0}";
-      this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
-      // 
-      // bindingNavigatorDeleteItem1
-      // 
-      this.bindingNavigatorDeleteItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.bindingNavigatorDeleteItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem1.Image")));
-      this.bindingNavigatorDeleteItem1.Name = "bindingNavigatorDeleteItem1";
-      this.bindingNavigatorDeleteItem1.RightToLeftAutoMirrorImage = true;
-      this.bindingNavigatorDeleteItem1.Size = new System.Drawing.Size(23, 22);
-      this.bindingNavigatorDeleteItem1.Text = "Delete";
       // 
       // bindingNavigatorMoveFirstItem1
       // 
@@ -636,6 +593,13 @@
       this.bindingNavigatorPositionItem1.Text = "0";
       this.bindingNavigatorPositionItem1.ToolTipText = "Current position";
       // 
+      // bindingNavigatorCountItem1
+      // 
+      this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
+      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem1.Text = "of {0}";
+      this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
+      // 
       // bindingNavigatorSeparator4
       // 
       this.bindingNavigatorSeparator4.Name = "bindingNavigatorSeparator4";
@@ -663,6 +627,67 @@
       // 
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
+      // 
+      // bindingNavigatorAddNewItem1
+      // 
+      this.bindingNavigatorAddNewItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.bindingNavigatorAddNewItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem1.Image")));
+      this.bindingNavigatorAddNewItem1.Name = "bindingNavigatorAddNewItem1";
+      this.bindingNavigatorAddNewItem1.RightToLeftAutoMirrorImage = true;
+      this.bindingNavigatorAddNewItem1.Size = new System.Drawing.Size(23, 22);
+      this.bindingNavigatorAddNewItem1.Text = "Add new";
+      // 
+      // bindingNavigatorDeleteItem1
+      // 
+      this.bindingNavigatorDeleteItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.bindingNavigatorDeleteItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem1.Image")));
+      this.bindingNavigatorDeleteItem1.Name = "bindingNavigatorDeleteItem1";
+      this.bindingNavigatorDeleteItem1.RightToLeftAutoMirrorImage = true;
+      this.bindingNavigatorDeleteItem1.Size = new System.Drawing.Size(23, 22);
+      this.bindingNavigatorDeleteItem1.Text = "Delete";
+      // 
+      // panel5
+      // 
+      this.panel5.Controls.Add(this.navLinks);
+      this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.panel5.Location = new System.Drawing.Point(0, 442);
+      this.panel5.Name = "panel5";
+      this.panel5.Size = new System.Drawing.Size(258, 28);
+      this.panel5.TabIndex = 0;
+      // 
+      // tblLinks
+      // 
+      this.tblLinks.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+      this.tblLinks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.tblLinks.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.tblLinks.Location = new System.Drawing.Point(0, 255);
+      this.tblLinks.MultiSelect = false;
+      this.tblLinks.Name = "tblLinks";
+      this.tblLinks.Size = new System.Drawing.Size(258, 164);
+      this.tblLinks.TabIndex = 1;
+      this.tblLinks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_CellDoubleClick);
+      this.tblLinks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_RowLeave);
+      // 
+      // splitter2
+      // 
+      this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.splitter2.Location = new System.Drawing.Point(0, 252);
+      this.splitter2.Name = "splitter2";
+      this.splitter2.Size = new System.Drawing.Size(258, 3);
+      this.splitter2.TabIndex = 3;
+      this.splitter2.TabStop = false;
+      // 
+      // edtComments
+      // 
+      this.edtComments.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.edtComments.Location = new System.Drawing.Point(0, 0);
+      this.edtComments.Multiline = true;
+      this.edtComments.Name = "edtComments";
+      this.edtComments.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      this.edtComments.ShortcutsEnabled = false;
+      this.edtComments.Size = new System.Drawing.Size(258, 252);
+      this.edtComments.TabIndex = 4;
+      this.edtComments.Leave += new System.EventHandler(this.edtComments_Leave);
       // 
       // frmMain
       // 
@@ -693,13 +718,14 @@
       this.navTasks.ResumeLayout(false);
       this.navTasks.PerformLayout();
       this.panel4.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).EndInit();
+      this.panel4.PerformLayout();
       this.panel6.ResumeLayout(false);
-      this.panel5.ResumeLayout(false);
-      this.panel5.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navLinks)).EndInit();
       this.navLinks.ResumeLayout(false);
       this.navLinks.PerformLayout();
+      this.panel5.ResumeLayout(false);
+      this.panel5.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -736,24 +762,6 @@
     private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
     private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
     private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
-    private System.Windows.Forms.Panel panel4;
-    private System.Windows.Forms.DataGridView tblLinks;
-    private System.Windows.Forms.Panel panel5;
-    private System.Windows.Forms.BindingNavigator navLinks;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem1;
-    private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem1;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem1;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem1;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorMovePreviousItem1;
-    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator3;
-    private System.Windows.Forms.ToolStripTextBox bindingNavigatorPositionItem1;
-    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator4;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem1;
-    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem1;
-    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator5;
-    private System.Windows.Forms.Panel panel6;
-    private System.Windows.Forms.Button btnOpenFile;
-    private System.Windows.Forms.Button btnOpenLink;
     private System.Windows.Forms.ToolStripMenuItem menuBill;
     private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     private System.Windows.Forms.ToolStripMenuItem menuMult;
@@ -769,7 +777,26 @@
     private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateOutFolder;
     private System.Windows.Forms.ToolStripMenuItem menuTblTaskCreateArchiveCopy;
     private System.Windows.Forms.Label lblTotalUnpaid;
-
+    private System.Windows.Forms.Panel panel4;
+    private System.Windows.Forms.TextBox edtComments;
+    private System.Windows.Forms.Splitter splitter2;
+    private System.Windows.Forms.DataGridView tblLinks;
+    private System.Windows.Forms.Panel panel6;
+    private System.Windows.Forms.Button btnOpenFile;
+    private System.Windows.Forms.Button btnOpenLink;
+    private System.Windows.Forms.Panel panel5;
+    private System.Windows.Forms.BindingNavigator navLinks;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem1;
+    private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem1;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem1;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem1;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorMovePreviousItem1;
+    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator3;
+    private System.Windows.Forms.ToolStripTextBox bindingNavigatorPositionItem1;
+    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator4;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem1;
+    private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem1;
+    private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator5;
   }
 }
 

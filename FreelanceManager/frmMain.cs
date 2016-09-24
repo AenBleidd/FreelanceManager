@@ -441,6 +441,7 @@ namespace FreelanceManager
         colRemark.Name = "Remark";
         colRemark.HeaderText = "Примечание";
         colRemark.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+        colRemark.Visible = false;
         tblTasks.Columns.Add(colRemark);
 
         DataGridViewTextBoxColumn colColor = new DataGridViewTextBoxColumn();
@@ -653,15 +654,25 @@ namespace FreelanceManager
 
     private void tblTasks_SelectionChanged(object sender, EventArgs e)
     {
-      ShowLinks((tblTasks.CurrentCell != null && tblTasks.CurrentCell.RowIndex != -1) ? tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["idTask"].Value : DBNull.Value);
+      if (tblTasks.CurrentCell != null && tblTasks.CurrentCell.RowIndex != -1)
+      {
+        ShowLinks(tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["idTask"].Value);
+        edtComments.Text = Convert.ToString(tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["Remark"].Value);
+      }
+      else
+      {
+        ShowLinks(DBNull.Value);
+        edtComments.Text = string.Empty;
+      }
     }
 
     private void menuSave_Click(object sender, EventArgs e)
     {
-      if (tblTasks.Focused)
+      if (tblTasks.Focused || edtComments.Focused)
       {
         int rowindex = tblTasks.CurrentCell.RowIndex;
         int colindex = tblTasks.CurrentCell.ColumnIndex;
+        SaveComments();
         SaveTasks();
         ShowTasks();
         if (rowindex >= 0 && colindex >= 0)
@@ -1029,6 +1040,20 @@ namespace FreelanceManager
       Cursor.Current = Cursors.Default;
 
       MessageBox.Show("Готово", "Создание архивной копии", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private void edtComments_Leave(object sender, EventArgs e)
+    {
+      SaveComments();
+    }
+
+    private void SaveComments()
+    {
+      if (tblTasks.CurrentCell != null && tblTasks.CurrentCell.RowIndex != -1 &&
+        edtComments.Text != Convert.ToString(tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["Remark"].Value))
+      {
+        tblTasks.Rows[tblTasks.CurrentCell.RowIndex].Cells["Remark"].Value = edtComments.Text;
+      }
     }
   }
 }
