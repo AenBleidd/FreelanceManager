@@ -75,25 +75,25 @@
       this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
       this.panel4 = new System.Windows.Forms.Panel();
-      this.btnOpenLink = new System.Windows.Forms.Button();
-      this.btnOpenFile = new System.Windows.Forms.Button();
+      this.edtComments = new System.Windows.Forms.TextBox();
+      this.splitter2 = new System.Windows.Forms.Splitter();
+      this.tblLinks = new System.Windows.Forms.DataGridView();
       this.panel6 = new System.Windows.Forms.Panel();
+      this.btnOpenFile = new System.Windows.Forms.Button();
+      this.btnOpenLink = new System.Windows.Forms.Button();
+      this.panel5 = new System.Windows.Forms.Panel();
       this.navLinks = new System.Windows.Forms.BindingNavigator(this.components);
+      this.bindingNavigatorAddNewItem1 = new System.Windows.Forms.ToolStripButton();
+      this.bindingNavigatorCountItem1 = new System.Windows.Forms.ToolStripLabel();
+      this.bindingNavigatorDeleteItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveFirstItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMovePreviousItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator3 = new System.Windows.Forms.ToolStripSeparator();
       this.bindingNavigatorPositionItem1 = new System.Windows.Forms.ToolStripTextBox();
-      this.bindingNavigatorCountItem1 = new System.Windows.Forms.ToolStripLabel();
       this.bindingNavigatorSeparator4 = new System.Windows.Forms.ToolStripSeparator();
       this.bindingNavigatorMoveNextItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorMoveLastItem1 = new System.Windows.Forms.ToolStripButton();
       this.bindingNavigatorSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-      this.bindingNavigatorAddNewItem1 = new System.Windows.Forms.ToolStripButton();
-      this.bindingNavigatorDeleteItem1 = new System.Windows.Forms.ToolStripButton();
-      this.panel5 = new System.Windows.Forms.Panel();
-      this.tblLinks = new System.Windows.Forms.DataGridView();
-      this.splitter2 = new System.Windows.Forms.Splitter();
-      this.edtComments = new System.Windows.Forms.TextBox();
       this.menuStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
       this.panel1.SuspendLayout();
@@ -104,11 +104,11 @@
       ((System.ComponentModel.ISupportInitialize)(this.navTasks)).BeginInit();
       this.navTasks.SuspendLayout();
       this.panel4.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).BeginInit();
       this.panel6.SuspendLayout();
+      this.panel5.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navLinks)).BeginInit();
       this.navLinks.SuspendLayout();
-      this.panel5.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).BeginInit();
       this.SuspendLayout();
       // 
       // menuStrip1
@@ -499,16 +499,48 @@
       this.panel4.Size = new System.Drawing.Size(258, 470);
       this.panel4.TabIndex = 4;
       // 
-      // btnOpenLink
+      // edtComments
       // 
-      this.btnOpenLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.btnOpenLink.Location = new System.Drawing.Point(0, 0);
-      this.btnOpenLink.Name = "btnOpenLink";
-      this.btnOpenLink.Size = new System.Drawing.Size(105, 23);
-      this.btnOpenLink.TabIndex = 0;
-      this.btnOpenLink.Text = "Открыть ссылку";
-      this.btnOpenLink.UseVisualStyleBackColor = true;
-      this.btnOpenLink.Click += new System.EventHandler(this.btnOpenLink_Click);
+      this.edtComments.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.edtComments.Location = new System.Drawing.Point(0, 0);
+      this.edtComments.Multiline = true;
+      this.edtComments.Name = "edtComments";
+      this.edtComments.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      this.edtComments.Size = new System.Drawing.Size(258, 252);
+      this.edtComments.TabIndex = 4;
+      this.edtComments.Leave += new System.EventHandler(this.edtComments_Leave);
+      // 
+      // splitter2
+      // 
+      this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.splitter2.Location = new System.Drawing.Point(0, 252);
+      this.splitter2.Name = "splitter2";
+      this.splitter2.Size = new System.Drawing.Size(258, 3);
+      this.splitter2.TabIndex = 3;
+      this.splitter2.TabStop = false;
+      // 
+      // tblLinks
+      // 
+      this.tblLinks.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+      this.tblLinks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.tblLinks.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.tblLinks.Location = new System.Drawing.Point(0, 255);
+      this.tblLinks.MultiSelect = false;
+      this.tblLinks.Name = "tblLinks";
+      this.tblLinks.Size = new System.Drawing.Size(258, 164);
+      this.tblLinks.TabIndex = 1;
+      this.tblLinks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_CellDoubleClick);
+      this.tblLinks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_RowLeave);
+      // 
+      // panel6
+      // 
+      this.panel6.Controls.Add(this.btnOpenFile);
+      this.panel6.Controls.Add(this.btnOpenLink);
+      this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.panel6.Location = new System.Drawing.Point(0, 419);
+      this.panel6.Name = "panel6";
+      this.panel6.Size = new System.Drawing.Size(258, 23);
+      this.panel6.TabIndex = 2;
       // 
       // btnOpenFile
       // 
@@ -521,15 +553,25 @@
       this.btnOpenFile.UseVisualStyleBackColor = true;
       this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
       // 
-      // panel6
+      // btnOpenLink
       // 
-      this.panel6.Controls.Add(this.btnOpenFile);
-      this.panel6.Controls.Add(this.btnOpenLink);
-      this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel6.Location = new System.Drawing.Point(0, 419);
-      this.panel6.Name = "panel6";
-      this.panel6.Size = new System.Drawing.Size(258, 23);
-      this.panel6.TabIndex = 2;
+      this.btnOpenLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.btnOpenLink.Location = new System.Drawing.Point(0, 0);
+      this.btnOpenLink.Name = "btnOpenLink";
+      this.btnOpenLink.Size = new System.Drawing.Size(105, 23);
+      this.btnOpenLink.TabIndex = 0;
+      this.btnOpenLink.Text = "Открыть ссылку";
+      this.btnOpenLink.UseVisualStyleBackColor = true;
+      this.btnOpenLink.Click += new System.EventHandler(this.btnOpenLink_Click);
+      // 
+      // panel5
+      // 
+      this.panel5.Controls.Add(this.navLinks);
+      this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+      this.panel5.Location = new System.Drawing.Point(0, 442);
+      this.panel5.Name = "panel5";
+      this.panel5.Size = new System.Drawing.Size(258, 28);
+      this.panel5.TabIndex = 0;
       // 
       // navLinks
       // 
@@ -560,6 +602,31 @@
       this.navLinks.Size = new System.Drawing.Size(255, 25);
       this.navLinks.TabIndex = 0;
       this.navLinks.Text = "bindingNavigator1";
+      // 
+      // bindingNavigatorAddNewItem1
+      // 
+      this.bindingNavigatorAddNewItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.bindingNavigatorAddNewItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem1.Image")));
+      this.bindingNavigatorAddNewItem1.Name = "bindingNavigatorAddNewItem1";
+      this.bindingNavigatorAddNewItem1.RightToLeftAutoMirrorImage = true;
+      this.bindingNavigatorAddNewItem1.Size = new System.Drawing.Size(23, 22);
+      this.bindingNavigatorAddNewItem1.Text = "Add new";
+      // 
+      // bindingNavigatorCountItem1
+      // 
+      this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
+      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
+      this.bindingNavigatorCountItem1.Text = "of {0}";
+      this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
+      // 
+      // bindingNavigatorDeleteItem1
+      // 
+      this.bindingNavigatorDeleteItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.bindingNavigatorDeleteItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem1.Image")));
+      this.bindingNavigatorDeleteItem1.Name = "bindingNavigatorDeleteItem1";
+      this.bindingNavigatorDeleteItem1.RightToLeftAutoMirrorImage = true;
+      this.bindingNavigatorDeleteItem1.Size = new System.Drawing.Size(23, 22);
+      this.bindingNavigatorDeleteItem1.Text = "Delete";
       // 
       // bindingNavigatorMoveFirstItem1
       // 
@@ -593,13 +660,6 @@
       this.bindingNavigatorPositionItem1.Text = "0";
       this.bindingNavigatorPositionItem1.ToolTipText = "Current position";
       // 
-      // bindingNavigatorCountItem1
-      // 
-      this.bindingNavigatorCountItem1.Name = "bindingNavigatorCountItem1";
-      this.bindingNavigatorCountItem1.Size = new System.Drawing.Size(35, 22);
-      this.bindingNavigatorCountItem1.Text = "of {0}";
-      this.bindingNavigatorCountItem1.ToolTipText = "Total number of items";
-      // 
       // bindingNavigatorSeparator4
       // 
       this.bindingNavigatorSeparator4.Name = "bindingNavigatorSeparator4";
@@ -627,67 +687,6 @@
       // 
       this.bindingNavigatorSeparator5.Name = "bindingNavigatorSeparator5";
       this.bindingNavigatorSeparator5.Size = new System.Drawing.Size(6, 25);
-      // 
-      // bindingNavigatorAddNewItem1
-      // 
-      this.bindingNavigatorAddNewItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.bindingNavigatorAddNewItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem1.Image")));
-      this.bindingNavigatorAddNewItem1.Name = "bindingNavigatorAddNewItem1";
-      this.bindingNavigatorAddNewItem1.RightToLeftAutoMirrorImage = true;
-      this.bindingNavigatorAddNewItem1.Size = new System.Drawing.Size(23, 22);
-      this.bindingNavigatorAddNewItem1.Text = "Add new";
-      // 
-      // bindingNavigatorDeleteItem1
-      // 
-      this.bindingNavigatorDeleteItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      this.bindingNavigatorDeleteItem1.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem1.Image")));
-      this.bindingNavigatorDeleteItem1.Name = "bindingNavigatorDeleteItem1";
-      this.bindingNavigatorDeleteItem1.RightToLeftAutoMirrorImage = true;
-      this.bindingNavigatorDeleteItem1.Size = new System.Drawing.Size(23, 22);
-      this.bindingNavigatorDeleteItem1.Text = "Delete";
-      // 
-      // panel5
-      // 
-      this.panel5.Controls.Add(this.navLinks);
-      this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel5.Location = new System.Drawing.Point(0, 442);
-      this.panel5.Name = "panel5";
-      this.panel5.Size = new System.Drawing.Size(258, 28);
-      this.panel5.TabIndex = 0;
-      // 
-      // tblLinks
-      // 
-      this.tblLinks.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-      this.tblLinks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.tblLinks.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.tblLinks.Location = new System.Drawing.Point(0, 255);
-      this.tblLinks.MultiSelect = false;
-      this.tblLinks.Name = "tblLinks";
-      this.tblLinks.Size = new System.Drawing.Size(258, 164);
-      this.tblLinks.TabIndex = 1;
-      this.tblLinks.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_CellDoubleClick);
-      this.tblLinks.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.tblLinks_RowLeave);
-      // 
-      // splitter2
-      // 
-      this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.splitter2.Location = new System.Drawing.Point(0, 252);
-      this.splitter2.Name = "splitter2";
-      this.splitter2.Size = new System.Drawing.Size(258, 3);
-      this.splitter2.TabIndex = 3;
-      this.splitter2.TabStop = false;
-      // 
-      // edtComments
-      // 
-      this.edtComments.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.edtComments.Location = new System.Drawing.Point(0, 0);
-      this.edtComments.Multiline = true;
-      this.edtComments.Name = "edtComments";
-      this.edtComments.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-      this.edtComments.ShortcutsEnabled = false;
-      this.edtComments.Size = new System.Drawing.Size(258, 252);
-      this.edtComments.TabIndex = 4;
-      this.edtComments.Leave += new System.EventHandler(this.edtComments_Leave);
       // 
       // frmMain
       // 
@@ -719,13 +718,13 @@
       this.navTasks.PerformLayout();
       this.panel4.ResumeLayout(false);
       this.panel4.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).EndInit();
       this.panel6.ResumeLayout(false);
+      this.panel5.ResumeLayout(false);
+      this.panel5.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.navLinks)).EndInit();
       this.navLinks.ResumeLayout(false);
       this.navLinks.PerformLayout();
-      this.panel5.ResumeLayout(false);
-      this.panel5.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.tblLinks)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
